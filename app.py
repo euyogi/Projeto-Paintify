@@ -3,13 +3,16 @@ import git
 
 app = Flask(__name__)
  
-@app.route('/update')
+@app.route('/update', methods=["POST"])
 def webhook():
-    repo = git.Repo(".")
-    origin = repo.remotes.origin
-    origin.pull()
+    if request.method == "POST":
+        repo = git.Repo(".")
+        origin = repo.remotes.origin
+        origin.pull()
 
-    return "Updated PythonAnywhere successfully", 200
+        return "Updated PythonAnywhere successfully", 200
+    else:
+        return "Wrong event type", 400
 
 
 @app.route('/')
