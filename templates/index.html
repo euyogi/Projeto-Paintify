@@ -1,6 +1,19 @@
 <!DOCTYPE html>
-<html>
-    <body>
-        <p>FINALMENTE</p>
-    </body>
+<html lang="pt-br">
+<body>
+    <h1>{{ titulo }}</h1>
+    <p>Exemplo de loop for:</p>
+    <ul>
+        {% for numero in numeros %}
+            <li>{{ numero }}</li>
+        {% endfor %}
+    </ul>
+    <p>Exemplo de estrutura if:</p>
+    {% if numeros %}
+        <p>Existem números na lista.</p>
+    {% else %}
+        <p>Não há números na lista.</p>
+    {% endif %}
+
+</body>
 </html>

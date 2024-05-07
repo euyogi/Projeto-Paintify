@@ -3,7 +3,7 @@ import git
 
 app = Flask(__name__)
  
-@app.route('/update', methods=["POST"])
+@app.route("/update", methods=["POST"])
 def webhook():
     if request.method == "POST":
         repo = git.Repo("/home/euyogi2/Trabalho-OO")
@@ -16,9 +16,11 @@ def webhook():
 
 
 @app.route('/')
-def ola_mundo():
-    nome = "glauco"
-    return render_template("index.html")
-    
-if __name__ == "__main__":
-    app.run()
+def index():
+    # Exemplo de variáveis que você pode passar para o template
+    titulo = "Exemplo de Flask"
+    numeros = [1, 2, 3, 4, 5]
+    return render_template('index.html', titulo=titulo, numeros=numeros)
+
+if __name__ == '__main__':
+    app.run(debug=True)
