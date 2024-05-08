@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
-import git
+import git, os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///minhabase.sqlite3'
+UPLOAD_FOLDER = '/home/euyogi2/upload'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 db = SQLAlchemy(app)
 
 
@@ -41,9 +43,7 @@ def index():
 
 @app.route("/usuario", methods=['POST', 'GET'])
 def addUsuario():
-    print(request.method)
     if request.method == 'POST':
-        print("Chamei o post")
         nome = request.form['nome']
         senha = request.form['senha']
         user = Usuario(nome, senha)
@@ -52,6 +52,17 @@ def addUsuario():
 
     users = Usuario.query.all()
     return render_template('usuario.html', usuarios=users)
+
+
+@app.route('/upload', methods=['POST', 'GET'])
+def upload():
+    if request.method == 'POST':
+        file = request.files['arquivo']
+        savePath = os.path.join(UPLOAD_FOLDER, file.filename)
+        file.save(savePath)
+        return 'upload feito com sucesso'
+
+    return render_template('upload.html')
 
 
 with app.app_context():
