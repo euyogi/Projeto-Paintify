@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
-import git, os
+import git
+import os
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///minhabase.sqlite3'
-UPLOAD_FOLDER = '/home/euyogi2/upload'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///minhabase.sqlite3"
+UPLOAD_FOLDER = "/home/euyogi2/Trabalho-OO/upload/"
+# UPLOAD_FOLDER = "C://Users/yogiq/OneDrive/Documentos/PyCharm/Trabalho-OO/upload/"
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 db = SQLAlchemy(app)
 
 
@@ -38,35 +40,35 @@ def index():
     # Exemplo de variáveis que você pode passar para o template
     titulo = "Exemplo de Flask"
     numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-    return render_template('index.html', titulo=titulo, numeros=numeros)
+    return render_template("index.html", titulo=titulo, numeros=numeros)
 
 
-@app.route("/usuario", methods=['POST', 'GET'])
+@app.route("/usuario", methods=["POST", "GET"])
 def addUsuario():
-    if request.method == 'POST':
-        nome = request.form['nome']
-        senha = request.form['senha']
+    if request.method == "POST":
+        nome = request.form["nome"]
+        senha = request.form["senha"]
         user = Usuario(nome, senha)
         db.session.add(user)
         db.session.commit()
 
     users = Usuario.query.all()
-    return render_template('usuario.html', usuarios=users)
+    return render_template("usuario.html", usuarios=users)
 
 
-@app.route('/upload', methods=['POST', 'GET'])
+@app.route("/upload", methods=["POST", "GET"])
 def upload():
-    if request.method == 'POST':
-        file = request.files['arquivo']
-        savePath = os.path.join(UPLOAD_FOLDER, file.filename)
-        file.save(savePath)
-        return 'upload feito com sucesso'
+    if request.method == "POST":
+        file = request.files["arquivo"]
+        save_path = os.path.join(UPLOAD_FOLDER, file.filename)
+        file.save(save_path)
+        return "upload feito com sucesso"
 
-    return render_template('upload.html')
+    return render_template("upload.html")
 
 
 with app.app_context():
     db.create_all()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run()
