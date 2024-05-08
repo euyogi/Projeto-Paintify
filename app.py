@@ -41,7 +41,9 @@ def index():
 
 @app.route("/usuario", methods=['POST', 'GET'])
 def addUsuario():
+    print(request.method)
     if request.method == 'POST':
+        print("Chamei o post")
         nome = request.form['nome']
         senha = request.form['senha']
         user = Usuario(nome, senha)
@@ -52,6 +54,8 @@ def addUsuario():
     return render_template('usuario.html', usuarios=users)
 
 
+with app.app_context():
+    db.create_all()
+
 if __name__ == '__main__':
     app.run()
-    db.create_all()

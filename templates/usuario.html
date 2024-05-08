@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, width=device-width">
-    {#    <link href="/static/styles.css" rel="stylesheet">#}
-</head>
-<body>
 Se você deseja cadastrar algum usuário, preencha os dados abaixo:
 <br>
-<form action="{{ url_for('addUsuario') }}" method=“POST">
+<form action="{{ url_for('addUsuario') }}" method="post">
     Qual seu nome? <input type="text" name="nome"> <br>
     Qual sua senha? <input type="text" name="senha">
     <input type="submit">
@@ -19,5 +11,3 @@ Os usuários cadastrados no sistema são:
     ID: {{ user.id }}, Nome: {{ user.nome }}, Senha: {{ user.senha }}
     <br>
 {% endfor %}
-</body>
-</html>
