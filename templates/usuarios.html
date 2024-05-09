@@ -1,0 +1,15 @@
+{% extends "template.html" %}
+
+{% block title %}
+    <Title>Login</Title>
+{% endblock %}
+
+{% block content %}
+    Os usuários cadastrados no sistema são:
+    <br>
+    {% for user in usuarios %}
+        ID: {{ user.id }}, {{ user.nome }}, {{ '*' * user.senha|length }}
+        <br>
+    {% endfor %}
+{% endblock %}
+

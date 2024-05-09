@@ -1,0 +1,21 @@
+{% extends "template.html" %}
+
+{% block title %}
+    <Title>Sign Up</Title>
+{% endblock %}
+
+{% block content %}
+    <form method="POST">
+        <label>Usuário:
+            <input type=text name=username>
+        </label>
+        <label>Senha:
+            <input type=password name=password>
+        </label>
+        <input type=submit value="Sign Up">
+    </form>
+    Já tinha se registrado? <a href={{ url_for("login") }}>Logar</a>
+    {% if falhou %}
+        Usuário já existe, tente novamente.
+    {% endif %}
+{% endblock %}
