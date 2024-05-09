@@ -3,8 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 import git
 import os
 
-UPLOAD_FOLDER = "C://Users/yogiq/OneDrive/Documentos/PyCharm/Trabalho-OO/upload/"
-# UPLOAD_FOLDER = "/home/euyogi2/Trabalho-OO/upload/"
+# UPLOAD_FOLDER = "C://Users/yogiq/OneDrive/Documentos/PyCharm/Trabalho-OO/upload/"
+UPLOAD_FOLDER = "/home/euyogi2/Trabalho-OO/upload/"
 
 app = Flask(__name__)
 app.secret_key = "123456"
