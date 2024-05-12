@@ -6,16 +6,17 @@
 
 {% block content %}
     <form method="POST">
-        <label>Usuário:
+        <label style="display:block">Username:
             <input type=text name=username>
         </label>
-        <label>Senha:
+        <label>Password:
             <input type=password name=password>
         </label>
         <input type=submit value="Sign Up">
     </form>
-    Já tinha se registrado? <a href={{ url_for("login") }}>Logar</a>
     {% if falhou %}
-        Usuário já existe, tente novamente.
+        <p>User already exists, try again or <a href={{ url_for("login") }}>Login</a></p>
+    {% else %}
+        <p>Has an account? <a href={{ url_for("login") }}>Login</a>.</p>
     {% endif %}
 {% endblock %}

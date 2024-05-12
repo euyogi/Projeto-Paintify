@@ -1,0 +1,16 @@
+{% extends "template.html" %}
+
+{% block title %}
+    <Title>Images</Title>
+{% endblock %}
+
+{% block content %}
+    {% if not logged %}
+        <p><a href="/login">Login</a> to enable image history</p>
+    {% endif %}
+    <div class="image-container">
+        {% for image in images %}
+            <img src="{{ image }}" alt="Image">
+        {% endfor %}
+    </div>
+{% endblock %}

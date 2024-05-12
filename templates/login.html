@@ -6,16 +6,17 @@
 
 {% block content %}
     <form method="POST">
-        <label>Usuário:
+        <label style="display:block">Username:
             <input type=text name=username>
         </label>
-        <label>Senha:
+        <label>Password:
             <input type=password name=password>
         </label>
         <input type=submit value=Login>
     </form>
-    Ainda não se registrou? <a href={{ url_for("signup") }}>Registrar</a>
     {% if falhou %}
-        Usuário/senha incorreto(s), tente novamente.
+        <p>Invalid User/Password, try again or <a href={{ url_for("signup") }}>Sign Up</a>.</p>
+    {% else %}
+        <p>No Account? <a href={{ url_for("signup") }}>Sign Up</a></p>
     {% endif %}
 {% endblock %}
