@@ -1,5 +1,5 @@
 /* Import Google font - Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 
 :root {
   --main-color: #4b2626;
@@ -8,7 +8,7 @@
 
 * {
   padding: 0;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 body {
@@ -46,15 +46,16 @@ a {
   display: flex;
   flex-direction: row;
   overflow-y: auto;
+  background-color: var(--main-color);
 }
 
-.image-container > img {
+.image-container img {
   margin-right: 5px;
 }
 
 iframe {
   border-radius: 12px;
-  background-color: whitesmoke;
+  background-color: white;
 }
 
 #music-board {
@@ -185,18 +186,23 @@ section {
 
 .buttons .clear-canvas {
   color: #6C757D;
-  border: 1px solid #6C757D;
+  border: 1px solid #a9aeb2;
   transition: all 0.3s ease;
 }
 
 .clear-canvas:hover {
   color: #fff;
-  background: #6C757D;
+  background: #a9aeb2;
 }
 
 .buttons .save-img {
   background: var(--lighter-color);
   border: 1px solid var(--lighter-color);
+  transition: all 0.3s ease;
+}
+
+.save-img:hover {
+  background: #8f4a37;
 }
 
 .drawing-board {

@@ -28,7 +28,7 @@ class Image(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     data = db.Column(db.String)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
     def __init__(self, data, user_id):
         self.data = data
@@ -41,7 +41,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True)
     password = db.Column(db.String)
-    images = db.relationship('Image', backref='users', lazy=True)
+    images = db.relationship("Image", backref="users", lazy=True)
 
     def __init__(self, name, password):
         self.name = name
@@ -94,7 +94,7 @@ def webhook():
         return "Wrong event type", 400
 
 
-@app.route('/musify', methods=["POST", "GET"])
+@app.route("/musify", methods=["POST", "GET"])
 def musify():
     if request.method == "POST":
         base64_image = request.json["data"]

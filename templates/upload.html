@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <form action="{{ url_for("upload") }}" enctype="multipart/form-data" method="POST">
+    <form action="{{ url_for('upload') }}" enctype="multipart/form-data" method="POST">
         <input type="file" name="file" id="file"> <input type="submit">
     </form>
     <a href="/logout">Deslogar</a>

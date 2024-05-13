@@ -122,12 +122,11 @@ clearCanvas.addEventListener("click", () => {
 
 saveImg.addEventListener("click", () => {
     saveImg.innerText = "Generating...";
-    img_url = canvas.toDataURL(); // passing canvasData as link href value
 
-    fetch(('/musify'), {
+    fetch(("/musify"), {
         method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json"
         },
         body: JSON.stringify({data: canvas.toDataURL()})
     }).then(response => {
@@ -140,14 +139,15 @@ saveImg.addEventListener("click", () => {
 
 musicBoard.addEventListener(("load"), () => {
     setTimeout(() => {
-        musicBoard.contentWindow.postMessage({command: 'toggle'}, '*');
+        musicBoard.contentWindow.postMessage({command: "toggle"}, '*');
         musicBoard.style.background = "transparent";
     }, 1000);
 });
 
 historyBoard.addEventListener(("load"), () => {
-    if (!historyBoard.contentWindow.document.querySelector("p"))
-        document.querySelector("p").innerHTML += " <a href='/logout'>Log Out</a>";
+    if (!historyBoard.contentWindow.document.querySelector("p") &&
+        document.querySelector("p").innerHTML.endsWith('y'))
+        document.querySelector("p").innerHTML += " | <a href='/logout'>Log Out</a>";
 })
 canvas.addEventListener("pointerdown", startDraw);
 canvas.addEventListener("pointermove", drawing);
