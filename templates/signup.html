@@ -6,12 +6,8 @@
 
 {% block content %}
     <form method="POST">
-        <label style="display:block">Username:
-            <input type=text name=username autofocus>
-        </label>
-        <label>Password:
-            <input type=password name=password>
-        </label>
+        <input type=text placeholder="Username" name=username autofocus>
+        <input type=password placeholder="Password" name=password>
         <input type=submit value="Sign Up">
     </form>
     {% if falhou %}

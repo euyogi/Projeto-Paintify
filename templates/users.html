@@ -7,7 +7,7 @@
 {% block content %}
     Os usuários cadastrados no sistema são:
     <br>
-    {% for user in usuarios %}
+    {% for user in users %}
         ID: {{ user.id }}, {{ user.name }}, {{ '*' * user.password|length }}
         <br>
     {% endfor %}

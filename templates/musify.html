@@ -7,9 +7,9 @@
 {% block content %}
     <body class="background">
     <div class="container">
-        <iframe id="music-board" src="" width="70%" height="80" frameBorder="0"
+        <iframe id="music-board" src="" width="60%" height="80" frameBorder="0"
                 allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" loading="lazy"></iframe>
-        <iframe id="history-board" src="{{ url_for('images') }}" width="30%" height="80" frameBorder="0"></iframe>
+        <iframe id="history-board" src="{{ url_for('images') }}" width="40%" height="80" frameBorder="0"></iframe>
     </div>
     <div class="container">
         <section class="tools-board">
@@ -17,15 +17,15 @@
                 <label class="title">Shapes</label>
                 <ul class="options">
                     <li class="option tool" id="rectangle">
-                        <img src="/static/icons/rectangle.svg" alt="">
+                        <img src="/static/icons/rectangle.svg" alt="Rectangle icon">
                         <span>Rectangle</span>
                     </li>
                     <li class="option tool" id="circle">
-                        <img src="/static/icons/circle.svg" alt="">
+                        <img src="/static/icons/circle.svg" alt="Circle icon">
                         <span>Circle</span>
                     </li>
                     <li class="option tool" id="line">
-                        <img src="/static/icons/line.svg" alt="">
+                        <img src="/static/icons/line.svg" alt="Line icon">
                         <span>Line</span>
                     </li>
                     <li class="option">
@@ -38,11 +38,11 @@
                 <label class="title">Options</label>
                 <ul class="options">
                     <li class="option active tool" id="brush">
-                        <img src="/static/icons/brush.svg" alt="">
+                        <img src="/static/icons/brush.svg" alt="Brush icon">
                         <span>Brush</span>
                     </li>
                     <li class="option tool" id="eraser">
-                        <img src="/static/icons/eraser.svg" alt="">
+                        <img src="/static/icons/eraser.svg" alt="Eraser icon">
                         <span>Eraser</span>
                     </li>
                     <li class="option">

@@ -6,8 +6,8 @@ import os
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
-# UPLOAD_FOLDER = "C://Users/yogiq/OneDrive/Documentos/PyCharm/Trabalho-OO/upload/"
-UPLOAD_FOLDER = "/home/euyogi2/Trabalho-OO/upload/"
+UPLOAD_FOLDER = "C://Users/yogiq/OneDrive/Documentos/PyCharm/Trabalho-OO/upload/"
+# UPLOAD_FOLDER = "/home/euyogi2/Trabalho-OO/upload/"
 
 os.environ["SPOTIPY_CLIENT_ID"] = "c873c85352234e17817333ec4dcafe4d"
 os.environ["SPOTIPY_CLIENT_SECRET"] = "d8e45a8df24c4ac396d7e2e42285f744"
@@ -51,17 +51,19 @@ class User(db.Model):
 def getSongID(song_name):
     try:
         response = spotify.search(q=song_name, limit=1)
-    except:
+    except Exception as e:
+        print(e)
         response = spotify.search(q=song_name, limit=1)
 
     return response["tracks"]["items"][0]["id"]
 
 
-def getSongName(base64_image):
+def prompt(base64_image):
     response = client.chat.completions.create(
         model="gpt-4-turbo",
         messages=[
-            {"role": "system", "content": "Answer only with the music name"},
+            {"role"   : "system",
+             "content": "Answer with the music name, then, separated by ###, a brief description of the image with at most 8 words."},
             {
                 "role"   : "user",
                 "content": [
@@ -69,7 +71,7 @@ def getSongName(base64_image):
                     {
                         "type"     : "image_url",
                         "image_url": {
-                            "url"   : f"{base64_image}",
+                            "url": f"{base64_image}",
                             "detail": "low",
                         },
                     },
@@ -104,9 +106,12 @@ def musify():
             db.session.add(image)
             db.session.commit()
 
-        music_name = getSongName(base64_image)
-        music_url = f"https://open.spotify.com/embed/track/{getSongID(music_name)}?utm_source=generator"
-        return music_url
+        response = prompt(base64_image)
+        music_name = response[:response.find('#')]
+        music_id = getSongID(music_name)
+        music_id_and_description = music_id + response[response.find('#'):]
+
+        return music_id_and_description
 
     return render_template("musify.html")
 
@@ -114,18 +119,18 @@ def musify():
 @app.route("/images", methods=["POST", "GET"])
 def images():
     if "id" in session:
-        images = Image.query.filter_by(user_id=session["id"])
-        images = [i.data for i in images]
+        images_list = Image.query.filter_by(user_id=session["id"])
+        images_list = [i.data for i in images_list]
 
-        return render_template("images.html", logged=True, images=reversed(images))
+        return render_template("images.html", logged=True, images=reversed(images_list))
 
     return render_template("images.html", logged=False)
 
 
 @app.route("/users", methods=["POST", "GET"])
 def users():
-    users = User.query.all()
-    return render_template("users.html", usuarios=users)
+    users_list = User.query.all()
+    return render_template("users.html", users=users_list)
 
 
 @app.route("/signup", methods=["POST", "GET"])

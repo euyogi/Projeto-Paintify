@@ -1,21 +1,22 @@
 const canvas = document.querySelector("canvas"),
-    tool_btns = document.querySelectorAll(".tool"),
-    fillColor = document.querySelector("#fill-color"),
-    sizeSlider = document.querySelector("#size-slider"),
-    colorBtns = document.querySelectorAll(".colors .option"),
-    colorPicker = document.querySelector("#color-picker"),
-    clearCanvas = document.querySelector(".clear-canvas"),
-    saveImg = document.querySelector(".save-img"),
-    ctx = canvas.getContext("2d", {willReadFrequently: true});
+        tool_btns = document.querySelectorAll(".tool"),
+        fillColor = document.querySelector("#fill-color"),
+        sizeSlider = document.querySelector("#size-slider"),
+        colorBtns = document.querySelectorAll(".colors .option"),
+        colorPicker = document.querySelector("#color-picker"),
+        clearCanvas = document.querySelector(".clear-canvas"),
+        saveImg = document.querySelector(".save-img"),
+        ctx = canvas.getContext("2d", {willReadFrequently: true});
 musicBoard = document.querySelector("#music-board");
 historyBoard = document.querySelector("#history-board");
+footer = document.querySelector("p");
 
 // global variables with default value
 let prevMouseX, prevMouseY, snapshot,
-    isDrawing = false,
-    selectedTool = "brush",
-    brushWidth = 5,
-    selectedColor = "#000";
+        isDrawing = false,
+        selectedTool = "brush",
+        brushWidth = 5,
+        selectedColor = "#000";
 
 const setCanvasBackground = () => {
     // setting whole canvas background to white, so the downloaded img background will be white
@@ -128,10 +129,12 @@ saveImg.addEventListener("click", () => {
         },
         body: JSON.stringify({data: canvas.toDataURL()})
     }).then(response => {
-        response.text().then(url_musica => musicBoard.src = url_musica);
-
+        response.text().then(response => {
+            musicBoard.src = "https://open.spotify.com/embed/track/" + response.slice(0, response.indexOf("#")) + "?utm_source=generator";
+            footer.innerHTML = response.slice(response.indexOf("###") + 4);
         saveImg.innerText = "Generate Song";
         document.getElementById("history-board").contentWindow.location.reload();
+        });
     });
 });
 
@@ -144,9 +147,10 @@ musicBoard.addEventListener(("load"), () => {
 
 historyBoard.addEventListener(("load"), () => {
     if (!historyBoard.contentWindow.document.querySelector("p") &&
-        document.querySelector("p").innerHTML.endsWith('y'))
-        document.querySelector("p").innerHTML += " | <a href='/logout'>Log Out</a>";
+            !footer.innerHTML.endsWith("Log Out"))
+        footer.innerHTML += " | <a href='/logout'>Log Out</a>";
 })
+
 canvas.addEventListener("pointerdown", startDraw);
 canvas.addEventListener("pointermove", drawing);
 canvas.addEventListener("pointerup", () => isDrawing = false);

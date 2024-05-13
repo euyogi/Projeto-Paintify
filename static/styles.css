@@ -184,6 +184,27 @@ section {
   cursor: pointer;
 }
 
+input {
+  height: 25px;
+  text-align: center;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  border: 1px solid #a9aeb2;
+
+}
+
+input[type="submit"] {
+  color: white;
+  padding: 0 10px;
+  background: var(--lighter-color);
+  border: 1px solid var(--lighter-color);
+  transition: all 0.3s ease;
+}
+
+input[type="submit"]:hover {
+  background: #8f4a37;
+}
+
 .buttons .clear-canvas {
   color: #6C757D;
   border: 1px solid #a9aeb2;
