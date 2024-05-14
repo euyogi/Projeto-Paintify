@@ -60,7 +60,7 @@ def getSongID(song_name):
 
 def prompt(base64_image):
     response = client.chat.completions.create(
-        model="gpt-4-turbo",
+        model="gpt-4o",
         messages=[
             {"role"   : "system",
              "content": "Answer with the music name, then, separated by ###, a brief description of the image with at most 8 words."},
