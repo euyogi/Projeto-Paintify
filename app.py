@@ -96,8 +96,8 @@ def webhook():
         return "Wrong event type", 400
 
 
-@app.route("/musify", methods=["POST", "GET"])
-def musify():
+@app.route("/paintify", methods=["POST", "GET"])
+def paintify():
     if request.method == "POST":
         base64_image = request.json["data"]
 
@@ -113,7 +113,7 @@ def musify():
 
         return music_id_and_description
 
-    return render_template("musify.html")
+    return render_template("paintify.html")
 
 
 @app.route("/images", methods=["POST", "GET"])
@@ -169,7 +169,7 @@ def login():
 @app.route("/logout")
 def logout():
     session.pop("id", None)
-    return redirect(url_for("musify"))
+    return redirect(url_for("paintify"))
 
 
 @app.route("/upload", methods=["POST", "GET"])

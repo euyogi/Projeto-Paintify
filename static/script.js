@@ -122,7 +122,7 @@ clearCanvas.addEventListener("click", () => {
 saveImg.addEventListener("click", () => {
     saveImg.innerText = "Generating...";
 
-    fetch(("/musify"), {
+    fetch(("/paintify"), {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
