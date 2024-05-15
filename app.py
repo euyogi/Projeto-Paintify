@@ -62,7 +62,7 @@ class GPT:
             model=self.__model,
             messages=[
                 {"role"   : "system",
-                 "content": "You will receive an image of a drawing. Strictly tell a music name based on that drawing, without quotations or alike, then, separated by one newline, describe the drawing with at most 10 words."},
+                 "content": "You will receive an image. Strictly tell a music name based on that image, without quotations or alike. Then, separated by one newline, describe the image with at most 10 words."},
                 {
                     "role"   : "user",
                     "content": [
@@ -126,7 +126,7 @@ def imgs():
     if "id" in session:
         images_list = Image.query.filter_by(user_id=session["id"])
         images_list = [i.data for i in images_list]
-        return render_template("imgs.html", logged=True, imgs=reversed(images_list))
+        return render_template("imgs.html", logged=True, imgs=reversed(images_list), empty=len(images_list) == 0)
 
     return render_template("imgs.html", logged=False)
 
@@ -140,7 +140,7 @@ def users():
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
     if "id" in session:
-        return redirect(url_for("upload"))
+        return redirect(url_for("login"))
 
     if request.method == "POST":
         name = request.form["username"]
@@ -158,7 +158,7 @@ def signup():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if "id" in session:
-        return redirect(url_for("upload"))
+        return redirect(url_for("paintify"))
 
     if request.method == "POST":
         name = request.form["username"]
