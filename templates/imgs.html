@@ -9,8 +9,8 @@
         <p><a href="/login">Login</a> to enable image history</p>
     {% endif %}
     <div class="image-container">
-        {% for image in images %}
-            <img src="{{ image }}" alt="Image">
+        {% for img in imgs %}
+            <img src="{{ img }}" alt="Image">
         {% endfor %}
     </div>
 {% endblock %}

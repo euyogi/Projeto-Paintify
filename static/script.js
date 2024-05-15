@@ -6,10 +6,10 @@ const canvas = document.querySelector("canvas"),
         colorPicker = document.querySelector("#color-picker"),
         clearCanvas = document.querySelector(".clear-canvas"),
         saveImg = document.querySelector(".save-img"),
-        ctx = canvas.getContext("2d", {willReadFrequently: true});
-musicBoard = document.querySelector("#music-board");
-historyBoard = document.querySelector("#history-board");
-footer = document.querySelector("p");
+        ctx = canvas.getContext("2d", {willReadFrequently: true}),
+        musicBoard = document.querySelector("#music-board"),
+        historyBoard = document.querySelector("#history-board"),
+        footer = document.querySelector("p")
 
 // global variables with default value
 let prevMouseX, prevMouseY, snapshot,
@@ -128,13 +128,11 @@ saveImg.addEventListener("click", () => {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({data: canvas.toDataURL()})
-    }).then(response => {
-        response.text().then(response => {
-            musicBoard.src = "https://open.spotify.com/embed/track/" + response.slice(0, response.indexOf("#")) + "?utm_source=generator";
-            footer.innerHTML = response.slice(response.indexOf("###") + 4);
+    }).then(response => response.json()).then(data => {
+        musicBoard.src = "https://open.spotify.com/embed/track/" + data.id + "?utm_source=generator";
+        footer.innerHTML = data.description;
         saveImg.innerText = "Generate Song";
         document.getElementById("history-board").contentWindow.location.reload();
-        });
     });
 });
 

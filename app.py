@@ -1,13 +1,10 @@
-from flask import Flask, url_for, redirect, render_template, request, session
+from flask import Flask, url_for, redirect, render_template, request, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from openai import OpenAI
 import git
 import os
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-
-UPLOAD_FOLDER = "C://Users/yogiq/OneDrive/Documentos/PyCharm/Trabalho-OO/upload/"
-# UPLOAD_FOLDER = "/home/euyogi2/Trabalho-OO/upload/"
 
 os.environ["SPOTIPY_CLIENT_ID"] = "c873c85352234e17817333ec4dcafe4d"
 os.environ["SPOTIPY_CLIENT_SECRET"] = "d8e45a8df24c4ac396d7e2e42285f744"
@@ -16,7 +13,6 @@ os.environ["SPOTIPY_REDIRECT_URI"] = "https://euyogi2.pythonanywhere.com"
 app = Flask(__name__)
 app.secret_key = "123456"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 db = SQLAlchemy(app)
 client = OpenAI(api_key="sk-proj-TJHW89j6QWKs5l0DJJnFT3BlbkFJ9poviL0wNhV2UFAnMB6t")
@@ -41,90 +37,98 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True)
     password = db.Column(db.String)
-    images = db.relationship("Image", backref="users", lazy=True)
+    imgs = db.relationship("Image", backref="users", lazy=True)
 
     def __init__(self, name, password):
         self.name = name
         self.password = password
 
 
-def getSongID(song_name):
+class GPT:
+    __instance = None
+
+    def __new__(cls):
+        if GPT.__instance is None:
+            GPT.__instance = super().__new__(cls)
+        return GPT.__instance
+
+    def __init__(self, model="gpt-4o"):
+        self.__model = model
+        self.__music_name = "No image has been loaded"
+        self.__image_description = "No image has been loaded"
+
+    def __update(self, base64_image):
+        response = client.chat.completions.create(
+            model=self.__model,
+            messages=[
+                {"role"   : "system",
+                 "content": "You will receive an image of a drawing. Strictly tell a music name based on that drawing, without quotations or alike, then, separated by one newline, describe the drawing with at most 10 words."},
+                {
+                    "role"   : "user",
+                    "content": [
+                        {
+                            "type"     : "image_url",
+                            "image_url": {
+                                "url"   : base64_image,
+                                "detail": "low",
+                            }
+                        }
+                    ]
+                }
+            ]
+        )
+
+        content = response.choices[0].message.content.split("\n")
+        self.__music_name = content[0]
+        self.__img_description = content[2]
+
+    def loadImage(self, base64_img):
+        self.__update(base64_img)
+
+    def getMusicName(self):
+        return self.__music_name
+
+    def getDescription(self):
+        return self.__img_description
+
+
+def getMusicID(music_name):
     try:
-        response = spotify.search(q=song_name, limit=1)
+        response = spotify.search(q=music_name, limit=1)
     except Exception as e:
         print(e)
-        response = spotify.search(q=song_name, limit=1)
+        response = spotify.search(q=music_name, limit=1)
 
     return response["tracks"]["items"][0]["id"]
-
-
-def prompt(base64_image):
-    response = client.chat.completions.create(
-        model="gpt-4o",
-        messages=[
-            {"role"   : "system",
-             "content": "Answer with the music name, then, separated by ###, a brief description of the image with at most 8 words."},
-            {
-                "role"   : "user",
-                "content": [
-                    {"type": "text", "text": "Give me a music based on the image:"},
-                    {
-                        "type"     : "image_url",
-                        "image_url": {
-                            "url": f"{base64_image}",
-                            "detail": "low",
-                        },
-                    },
-                ],
-            }
-        ],
-    )
-
-    return response.choices[0].message.content
-
-
-# Whenever this page gets a post request it pulls my repo and reloads the website
-@app.route("/update", methods=["POST"])
-def webhook():
-    if request.method == "POST":
-        repo = git.Repo("/home/euyogi2/Trabalho-OO")
-        origin = repo.remotes.origin
-        origin.pull()
-
-        return "Updated PythonAnywhere successfully", 200
-    else:
-        return "Wrong event type", 400
 
 
 @app.route("/paintify", methods=["POST", "GET"])
 def paintify():
     if request.method == "POST":
-        base64_image = request.json["data"]
+        base64_img = request.json["data"]
 
         if "id" in session:
-            image = Image(base64_image, session["id"])
-            db.session.add(image)
+            img = Image(base64_img, session["id"])
+            db.session.add(img)
             db.session.commit()
 
-        response = prompt(base64_image)
-        music_name = response[:response.find('#')]
-        music_id = getSongID(music_name)
-        music_id_and_description = music_id + response[response.find('#'):]
-
-        return music_id_and_description
+        gpt = GPT()
+        gpt.loadImage(base64_img)
+        music_id = getMusicID(gpt.getMusicName())
+        img_description = gpt.getDescription()
+        return jsonify({"id": music_id, "description": img_description})
 
     return render_template("paintify.html")
 
 
-@app.route("/images", methods=["POST", "GET"])
-def images():
+@app.route("/imgs", methods=["POST", "GET"])
+def imgs():
     if "id" in session:
         images_list = Image.query.filter_by(user_id=session["id"])
         images_list = [i.data for i in images_list]
+        return render_template("imgs.html", logged=True, imgs=reversed(images_list))
 
-        return render_template("images.html", logged=True, images=reversed(images_list))
-
-    return render_template("images.html", logged=False)
+    return render_template("imgs.html", logged=False)
 
 
 @app.route("/users", methods=["POST", "GET"])
@@ -141,6 +145,7 @@ def signup():
     if request.method == "POST":
         name = request.form["username"]
         password = request.form["password"]
+
         if User.query.filter_by(name=name).first() is None:
             user = User(name, password)
             db.session.add(user)
@@ -159,9 +164,10 @@ def login():
         name = request.form["username"]
         password = request.form["password"]
         user = User.query.filter_by(name=name, password=password).first()
+
         if user is not None:
             session["id"] = user.id
-            return redirect(url_for("images"))
+            return redirect(url_for("imgs"))
 
     return render_template("login.html", falhou=request.method == "POST")
 
@@ -172,18 +178,17 @@ def logout():
     return redirect(url_for("paintify"))
 
 
-@app.route("/upload", methods=["POST", "GET"])
-def upload():
-    if "id" not in session:
-        return redirect(url_for("login"))
-
+# Whenever this page gets a post request it pulls my repo and reloads the website
+@app.route("/update", methods=["POST"])
+def webhook():
     if request.method == "POST":
-        file = request.files["file"]
-        save_path = os.path.join(UPLOAD_FOLDER, file.filename)
-        file.save(save_path)
-        return "upload feito com sucesso <a href=\"/logout\">Deslogar</a>"
+        repo = git.Repo("/home/euyogi2/Trabalho-OO")
+        origin = repo.remotes.origin
+        origin.pull()
 
-    return render_template("upload.html")
+        return "Updated PythonAnywhere successfully", 200
+    else:
+        return "Wrong event type", 400
 
 
 with app.app_context():
