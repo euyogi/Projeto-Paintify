@@ -144,11 +144,9 @@ musicBoard.addEventListener(("load"), () => {
 });
 
 historyBoard.addEventListener(("load"), () => {
-    setTimeout(() => {
-    if (!historyBoard.contentWindow.document.querySelector("p") &&
+    if (!historyBoard.contentWindow.document.querySelector("a") &&
             !footer.innerHTML.endsWith("Log Out"))
         footer.innerHTML += " | <a href='/logout'>Log Out</a>";
-    }, 1000);
 })
 
 canvas.addEventListener("pointerdown", startDraw);
