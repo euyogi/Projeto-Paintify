@@ -7,10 +7,14 @@
 {% block content %}
     {% if not logged %}
         <p><a href="/login">Login</a> to enable image history</p>
+    {% else %}
+        {% if empty %}
+            <p>Empty</p>
+        {% endif %}
+        <div class="image-container">
+            {% for img in imgs %}
+                <img src="{{ img }}" alt="Image">
+            {% endfor %}
+        </div>
     {% endif %}
-    <div class="image-container">
-        {% for img in imgs %}
-            <img src="{{ img }}" alt="Image">
-        {% endfor %}
-    </div>
 {% endblock %}
