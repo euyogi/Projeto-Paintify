@@ -1,66 +1,33 @@
-/* Import Google font - Poppins */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 
 :root {
-  --main-color: #4b2626;
   --lighter-color: #c2471a;
+  --main-color: #4b2626;
 }
 
+/* Tag Selectors */
 * {
-  padding: 0;
   font-family: "Poppins", sans-serif;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  justify-content: center;
-  height: 100vh;
-  overflow-y: hidden;
-  margin: 0;
-}
-
-p {
-  margin: 0;
+  padding: 0;
 }
 
 a {
   color: var(--lighter-color);
 }
 
-.background {
-  background-color: var(--main-color);
-  margin: 8px;
-}
-
-.container {
+body {
   display: flex;
-  width: 100%;
-  gap: 10px;
-  padding: 10px;
-  max-width: 99%;
-  touch-action: none;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  margin: 0;
+  overflow: hidden;
+  text-align: center;
+  user-select: none;
 }
 
-.image-container {
-  display: flex;
-  flex-direction: row;
-  overflow-y: auto;
-    background-color: whitesmoke;
-}
-
-.image-container img {
-  margin-right: 5px;
-}
-
-iframe {
-  border-radius: 12px;
-  background-color: white;
-}
-
-#music-board {
-  background-color: #8f4a37;
+p {
+  margin: 0;
 }
 
 section {
@@ -68,67 +35,67 @@ section {
   border-radius: 7px;
 }
 
-.tools-board {
-  width: 150px;
-  padding: 15px 22px 0;
+iframe {
+  background-color: white;
+  border-radius: 12px;
 }
 
-.tools-board .row {
-  margin-bottom: 20px;
+/* Class Selectors */
+.background {
+  background-color: var(--main-color);
+  margin: 8px;
 }
 
-.row .options {
-  margin: 10px 0 0 5px;
-}
-
-.row .options .option {
+.buttons-container {
+  background: none;
   display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.buttons .clear-canvas {
+  border: 1px solid #a9aeb2;
+  color: #6C757D;
+  transition: all 0.3s ease;
+}
+
+.clear-canvas:hover {
+  background: #a9aeb2;
+  color: #fff;
+}
+
+.buttons .generate {
+  background: var(--lighter-color);
+  border: 1px solid var(--lighter-color);
+  transition: all 0.3s ease;
+}
+
+.generate:hover {
+  background: #8f4a37;
+}
+
+.buttons button {
+  background: none;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
   cursor: pointer;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.option:is(:hover, .active) img {
-  filter: invert(1%) sepia(30%) saturate(3000%) hue-rotate(320deg) brightness(100%) contrast(100%);
-}
-
-.option :where(span, label) {
-  color: #5A6168;
-  cursor: pointer;
-  padding-left: 10px;
-}
-
-.option:is(:hover, .active) :where(span, label) {
-  color: var(--lighter-color);
-}
-
-.option #fill-color {
-  cursor: pointer;
-  height: 16px;
-  width: 16px;
-  margin: 2px;
-}
-
-#fill-color:checked ~ label {
-  color: var(--lighter-color);
-}
-
-.option #size-slider {
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.colors .options {
-  display: flex;
-  justify-content: space-between;
+  margin-bottom: 13px;
+  outline: none;
+  padding: 11px 0;
+  width: 100%;
 }
 
 .colors .option {
-  height: 20px;
-  width: 20px;
   border-radius: 50%;
+  height: 20px;
   margin-top: 3px;
   position: relative;
+  width: 20px;
+}
+
+.colors .option:first-child.selected::before {
+  border-color: #ccc;
 }
 
 .colors .option:nth-child(1) {
@@ -153,78 +120,35 @@ section {
 }
 
 .colors .option.selected::before {
-  position: absolute;
-  content: "";
-  top: 50%;
-  left: 50%;
-  height: 10px;
-  width: 10px;
-  background: white;
+  background: seashell;
   border-radius: inherit;
+  content: "";
+  height: 10px;
+  left: 50%;
+  position: absolute;
+  top: 50%;
   transform: translate(-50%, -50%);
+  width: 10px;
 }
 
-.colors .option:first-child.selected::before {
-  border-color: #ccc;
+.colors .options {
+  display: flex;
+  justify-content: space-between;
 }
 
-.option #color-picker {
-  opacity: 0;
-  cursor: pointer;
-}
-
-.buttons button {
+.container {
+  display: flex;
+  gap: 10px;
+  max-width: 99%;
+  padding: 10px;
+  touch-action: none;
   width: 100%;
-  color: #fff;
-  border: none;
-  outline: none;
-  padding: 11px 0;
-  margin-bottom: 13px;
-  background: none;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
-input {
-  height: 25px;
-  text-align: center;
-  border-radius: 4px;
-  margin-bottom: 5px;
-  border: 1px solid #a9aeb2;
-
-}
-
-input[type="submit"] {
-  color: white;
-  padding: 0 10px;
-  background: var(--lighter-color);
-  border: 1px solid var(--lighter-color);
-  transition: all 0.3s ease;
-}
-
-input[type="submit"]:hover {
-  background: #8f4a37;
-}
-
-.buttons .clear-canvas {
-  color: #6C757D;
-  border: 1px solid #a9aeb2;
-  transition: all 0.3s ease;
-}
-
-.clear-canvas:hover {
-  color: #fff;
-  background: #a9aeb2;
-}
-
-.buttons .save-img {
-  background: var(--lighter-color);
-  border: 1px solid var(--lighter-color);
-  transition: all 0.3s ease;
-}
-
-.save-img:hover {
-  background: #8f4a37;
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .drawing-board {
@@ -233,6 +157,108 @@ input[type="submit"]:hover {
 }
 
 .drawing-board canvas {
-  width: 100%;
   height: 100%;
+  width: 100%;
+}
+
+.image-container {
+  background-color: whitesmoke;
+  display: flex;
+  flex-direction: row;
+  overflow-y: auto;
+}
+
+.image-container img {
+  border-radius: 12px;
+  margin-right: 5px;
+}
+
+.image-container img:hover {
+  border: 7px solid #a9aeb2;
+}
+
+.image-selected {
+  border: 6px solid #a9aeb2;
+}
+
+input, .buttons-container button {
+  border: 1px solid #a9aeb2;
+  border-radius: 4px;
+  height: 25px;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+input[type="submit"], .buttons-container button {
+  background: var(--lighter-color);
+  border: 1px solid var(--lighter-color);
+  color: white;
+  cursor: pointer;
+  padding: 0 10px;
+  transition: all 0.3s ease;
+}
+
+input[type="submit"]:hover, .buttons-container button:hover {
+  background: #8f4a37;
+  border-color: #8f4a37;
+}
+
+.option :where(span, label) {
+  color: #5A6168;
+  cursor: pointer;
+  padding-left: 10px;
+}
+
+.option #color-picker {
+  cursor: pointer;
+  opacity: 0;
+}
+
+.option #fill-color {
+  cursor: pointer;
+  height: 16px;
+  margin: 2px;
+  width: 16px;
+}
+
+#fill-color:checked ~ label {
+  color: var(--lighter-color);
+}
+
+.option #size-slider {
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.option:is(:hover, .active) img {
+  filter: invert(1%) sepia(30%) saturate(3000%) hue-rotate(320deg) brightness(100%) contrast(100%);
+}
+
+.option:is(:hover, .active) :where(span, label) {
+  color: var(--lighter-color);
+}
+
+.row .options {
+  margin: 10px 0 0 5px;
+}
+
+.row .options .option {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.tools-board {
+  padding: 15px 22px 0;
+  width: 150px;
+}
+
+.tools-board .row {
+  margin-bottom: 20px;
+}
+
+/* ID Selectors */
+#music-board {
+  background-color: #8f4a37;
 }

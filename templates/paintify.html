@@ -8,7 +8,11 @@
     <body class="background">
     <div class="container">
         <iframe id="music-board" src="" width="60%" height="80" frameBorder="0"
-                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" loading="lazy"></iframe>
+                allow="autoplay; clipboard-write; encrypted-media" loading="lazy"></iframe>
+        <div class="buttons-container">
+            <button id="remove">Remove</button>
+            <button id="generate">Generate</button>
+        </div>
         <iframe id="history-board" src="{{ url_for('imgs') }}" width="40%" height="80" frameBorder="0"></iframe>
     </div>
     <div class="container">
@@ -64,7 +68,7 @@
             </div>
             <div class="row buttons">
                 <button class="clear-canvas">Clear Canvas</button>
-                <button class="save-img">Generate Song</button>
+                <button class="generate">Generate Song</button>
             </div>
         </section>
         <section class="drawing-board">
@@ -73,5 +77,6 @@
     </div>
     <p style="color:#8f4a37;">Powered by Open AI and Spotify</p>
     <p style="color:#8f4a37;">Made by <a href="https://github.com/euyogi">Yogi Nam</a></p>
+    <script src="/static/script.js"></script>
     </body>
 {% endblock %}

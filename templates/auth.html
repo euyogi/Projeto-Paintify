@@ -1,0 +1,27 @@
+{% extends "template.html" %}
+
+{% block title %}
+    <Title>Auth</Title>
+{% endblock %}
+
+{% block content %}
+    <form method="POST">
+        <input type=text placeholder="Username" name=username autofocus autocomplete="on" required>
+        <input type=password placeholder="Password" name=password autocomplete="on" required>
+        <input type=submit value="{{ type }}">
+    </form>
+    {% if falhou %}
+        {% if type == "Login" %}
+            <p style="color: orangered;">Invalid User/Password. Try again or <a href={{ url_for("signup") }}>Sign Up</a>.
+            </p>
+        {% else %}
+            <p style="color: orangered;">Username taken. Try again or <a href={{ url_for("login") }}>Login</a></p>
+        {% endif %}
+    {% else %}
+        {% if type == "Login" %}
+            <p>No Account? <a href={{ url_for("signup") }}>Sign Up</a></p>
+        {% else %}
+            <p>Has an account? <a href={{ url_for("login") }}>Login</a></p>
+        {% endif %}
+    {% endif %}
+{% endblock %}

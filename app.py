@@ -23,7 +23,7 @@ class Image(db.Model):
     __tablename__ = "images"
 
     id = db.Column(db.Integer, primary_key=True)
-    data = db.Column(db.String)
+    data = db.Column(db.String, unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
     def __init__(self, data, user_id):
@@ -97,7 +97,7 @@ def getMusicID(music_name):
         response = spotify.search(q=music_name, limit=1)
     except Exception as e:
         print(e)
-        response = spotify.search(q=music_name, limit=1)
+        return ""
 
     return response["tracks"]["items"][0]["id"]
 
@@ -107,12 +107,12 @@ def paintify():
     if request.method == "POST":
         base64_img = request.json["data"]
 
-        if "id" in session:
+        if "id" in session and Image.query.filter_by(data=base64_img).first() is None:
             img = Image(base64_img, session["id"])
             db.session.add(img)
             db.session.commit()
 
-        gpt = GPT()
+        gpt = GPT("")
         gpt.loadImage(base64_img)
         music_id = getMusicID(gpt.getMusicName())
         img_description = gpt.getDescription()
@@ -121,7 +121,7 @@ def paintify():
     return render_template("paintify.html")
 
 
-@app.route("/imgs", methods=["POST", "GET"])
+@app.route("/imgs")
 def imgs():
     if "id" in session:
         images_list = Image.query.filter_by(user_id=session["id"])
@@ -131,13 +131,13 @@ def imgs():
     return render_template("imgs.html", logged=False)
 
 
-@app.route("/users", methods=["POST", "GET"])
+@app.route("/users")
 def users():
     users_list = User.query.all()
     return render_template("users.html", users=users_list)
 
 
-@app.route("/signup", methods=["POST", "GET"])
+@app.route("/signup", methods=["GET", "POST"])
 def signup():
     if "id" in session:
         return redirect(url_for("login"))
@@ -152,7 +152,7 @@ def signup():
             db.session.commit()
             return redirect(url_for("login"))
 
-    return render_template("signup.html", falhou=request.method == "POST")
+    return render_template("auth.html", type="Sign Up", falhou=request.method == "POST")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -169,13 +169,23 @@ def login():
             session["id"] = user.id
             return redirect(url_for("imgs"))
 
-    return render_template("login.html", falhou=request.method == "POST")
+    return render_template("auth.html", type="Login", falhou=request.method == "POST")
 
 
 @app.route("/logout")
 def logout():
     session.pop("id", None)
     return redirect(url_for("paintify"))
+
+
+@app.route("/remove", methods=["POST"])
+def remove():
+    base64_img = request.json["data"]
+    img = Image.query.filter_by(data=base64_img).first()
+    db.session.delete(img)
+    db.session.commit()
+
+    return jsonify({"message": "Image deleted successfully"}), 200
 
 
 # Whenever this page gets a post request it pulls my repo and reloads the website
