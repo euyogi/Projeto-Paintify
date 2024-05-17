@@ -3,7 +3,7 @@ const music_board = document.querySelector("#music-board"),
         remove_btn = document.querySelector("#remove"),
         generate_btn = document.querySelector("#generate"),
         history_board = document.querySelector("#history-board"),
-        footer = document.querySelector("p")
+        footer = document.querySelector("#footer")
 
 class Canvas {
     static instance;
@@ -27,6 +27,7 @@ class Canvas {
         this.color_picker = document.querySelector("#color-picker")
         this.clear_canvas = document.querySelector(".clear-canvas")
         this.generate = document.querySelector(".generate")
+        this.initial_title = document.querySelector(".initial-title")
         this.ctx = this.canvas.getContext("2d", {willReadFrequently: true})
         this.isDrawing = false
         this.selectedTool = "brush"
@@ -81,12 +82,14 @@ class Canvas {
 
     // All white
     setCanvasBackground() {
+        this.initial_title.classList.remove("hidden")
         this.ctx.fillStyle = "#fff"
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.fillStyle = this.selectedColor // setting fillstyle back to the selectedColor
     }
 
     startDraw(e) {
+        this.initial_title.classList.add("hidden")
         this.isDrawing = true
         this.prevMouseX = e.offsetX // passing current mouseX position as prevMouseX value
         this.prevMouseY = e.offsetY // passing current mouseY position as prevMouseY value

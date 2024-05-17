@@ -154,6 +154,7 @@ iframe {
 .drawing-board {
   flex: 1;
   overflow: hidden;
+  position: relative;
 }
 
 .drawing-board canvas {
@@ -174,15 +175,30 @@ iframe {
 }
 
 .image-container img:hover {
-  border: 7px solid #a9aeb2;
+  border: 7px solid lightgray;
 }
 
 .image-selected {
-  border: 6px solid #a9aeb2;
+  border: 6px solid lightgray;
+}
+
+.initial-title {
+  cursor: not-allowed;
+  color: lightgray;
+  font-size: 30px;
+  left: 50%;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hidden {
+  visibility: hidden;
 }
 
 input, .buttons-container button {
-  border: 1px solid #a9aeb2;
+  border: 1px solid lightgray;
   border-radius: 4px;
   height: 25px;
   margin-bottom: 5px;
@@ -204,7 +220,7 @@ input[type="submit"]:hover, .buttons-container button:hover {
 }
 
 .option :where(span, label) {
-  color: #5A6168;
+  color: dimgray;
   cursor: pointer;
   padding-left: 10px;
 }
