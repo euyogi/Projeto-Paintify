@@ -47,7 +47,7 @@ class User(db.Model):
 class GPT:
     __instance = None
 
-    def __new__(cls):
+    def __new__(cls, model="gpt-4o"):
         if GPT.__instance is None:
             GPT.__instance = super().__new__(cls)
         return GPT.__instance
@@ -112,7 +112,7 @@ def paintify():
             db.session.add(img)
             db.session.commit()
 
-        gpt = GPT("")
+        gpt = GPT()
         gpt.loadImage(base64_img)
         music_id = getMusicID(gpt.getMusicName())
         img_description = gpt.getDescription()

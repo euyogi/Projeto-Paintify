@@ -6,7 +6,12 @@ const music_board = document.querySelector("#music-board"),
         footer = document.querySelector("p")
 
 class Canvas {
+    static instance;
+
     constructor() {
+        if (Canvas.instance)
+            return Canvas.instance;
+
         this.startDraw = this.startDraw.bind(this);
         this.drawing = this.drawing.bind(this);
         this.drawRect = this.drawRect.bind(this);
@@ -70,6 +75,8 @@ class Canvas {
         this.canvas.addEventListener("pointerdown", this.startDraw)
         this.canvas.addEventListener("pointermove", this.drawing)
         this.canvas.addEventListener("pointerup", () => this.isDrawing = false)
+
+        Canvas.instance = this;
     }
 
     // All white
