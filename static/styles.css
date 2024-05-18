@@ -271,13 +271,18 @@ p, label, span, img { /* transition in those make them fell laggy */
 }
 
 /* pure workaround but it's good :) */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 480px) {
   canvas {
     height: 50vh;
   }
 
+  footer {
+    visibility: hidden;
+    position: absolute;
+  }
+
   ul {
-    margin-bottom: 0;
+    margin: 5px;
   }
 
   li {
@@ -299,7 +304,7 @@ p, label, span, img { /* transition in those make them fell laggy */
 
   .container .column {
     flex-direction: row;
-    gap: 15px;
+    gap: 5px;
   }
 
   .option span { /* labels for each tool */
@@ -322,7 +327,7 @@ p, label, span, img { /* transition in those make them fell laggy */
   }
 
   .row {
-    gap: 10px;
+    gap: 5px;
   }
 
   #brush, #rectangle {
@@ -335,37 +340,13 @@ p, label, span, img { /* transition in those make them fell laggy */
     width: 100%;
   }
 
-  #size-slider {
-    display: block;
-    margin: 0;
-    width: 50px;
-  }
-}
-
-@media screen and (max-width: 500px) {
-  .container .column {
-    flex-direction: row;
-    gap: 5px;
-  }
-
-  .row {
-    gap: 5px;
-  }
-
-  label {
-    /*width: min-content;*/
-  }
-
-  ul {
-    margin: 5px;
-  }
-
   #history-board {
     width: 250px;
   }
 
-  footer {
-    visibility: hidden;
-    position: absolute;
+  #size-slider {
+    display: block;
+    margin: 0;
+    width: 50px;
   }
 }
