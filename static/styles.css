@@ -277,7 +277,7 @@ p, label, span, img { /* transition in those make them fell laggy */
   width: 103px;
 }
 
-/* pure workaround but it's good :) */
+/* little workaround but it's good :) */
 @media screen and (max-width: 768px) {
   canvas {
     height: 50vh;
