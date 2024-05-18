@@ -7,7 +7,7 @@
 {% block content %}
     <body class="background column">
     <div class="container">
-        <iframe id="music-board" src="" width="60%" height="80" frameBorder="0"
+        <iframe id="music-board" src="" height="80" frameBorder="0"
                 allow="autoplay; clipboard-write; encrypted-media" loading="lazy"></iframe>
 
         <div class="buttons-container">
@@ -15,7 +15,7 @@
             <button id="generate">Generate</button>
         </div>
 
-        <iframe id="history-board" src="{{ url_for('imgs') }}" width="40%" height="80" frameBorder="0"></iframe>
+        <iframe id="history-board" src="{{ url_for('imgs') }}" height="80" frameBorder="0"></iframe>
     </div>
 
     <div class="container">

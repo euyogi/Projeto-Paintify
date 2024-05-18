@@ -11,6 +11,7 @@
 * {
   font-family: "Poppins", sans-serif;
   padding: 0; /* li's padding */
+  transition: all 0.3s ease;
 }
 
 a {
@@ -28,7 +29,6 @@ button, input[type="submit"] {
   border: 1px solid var(--lighter-color);
   color: white;
   cursor: pointer;
-  transition: all 0.3s ease;
   padding: 0 5px;
 }
 
@@ -65,8 +65,9 @@ li {
   margin-bottom: 5px;
 }
 
-p {
+p, label, span { /* transition in those make them fell laggy */
   margin: 0;
+  transition: none;
 }
 
 .background {
@@ -177,10 +178,11 @@ p {
 }
 
 .row {
+  align-items: center; /* center verticaly */
   display: flex;
   flex-direction: row;
   gap: 5px;
-  justify-content: center; /* center vertically */
+  justify-content: center; /* center horizontally */
 }
 
 .tools-board {
@@ -234,9 +236,10 @@ p {
 }
 
 #images-container {
+  align-items: normal; /* if we align vertically, images get too big */
   background-color: whitesmoke;
   overflow-x: scroll;
-  justify-content: normal;
+  justify-content: normal; /* if we align horizontally, imagets get cropped */
 }
 
 #images-container img {
@@ -251,8 +254,13 @@ p {
   color: var(--lighter-color);
 }
 
+#history-board {
+  width: 40%;
+}
+
 #music-board {
   background-color: var(--another-color);
+  width: 60%;
 }
 
 #size-slider {
@@ -262,22 +270,42 @@ p {
   width: 103px;
 }
 
-@media (prefers-color-scheme: dark) {
-  iframe, section {
-    color: lightgray;
-    background-color: #1c0505;
+/* Styles for smaller screens */
+@media screen and (max-width: 768px) {
+  li {
+    display: inline;
   }
 
-  p {
-    color: lightgray;
+  canvas {
+    height: 300px;
   }
 
-  .option :where(span, label) { /* labels for each tool */
-    color: lightgray;
+  .option span { /* labels for each tool */
+    visibility: hidden;
+    position: absolute;
   }
 
-  input {
-    color: lightgray;
-    background: #1c0505;
+  .container {
+    flex-direction: column;
+  }
+
+  .container .column {
+    flex-direction: row;
+    gap: 5px;
+  }
+
+  .tools-board {
+    padding: 5px 0;
+    width: 100%;
+  }
+
+  #history-board, #music-board {
+    width: 100%;
+  }
+
+  #clear-canvas, #generate-song {
+    height: 50px;
+    padding: 0;
+    width: 90%;
   }
 }
