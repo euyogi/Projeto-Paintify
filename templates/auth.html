@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+    <section class="column full-height">
     <form method="POST">
         <input type=text placeholder="Username" name=username autofocus autocomplete="on" required>
         <input type=password placeholder="Password" name=password autocomplete="on" required>
@@ -24,4 +25,5 @@
             <p>Has an account? <a href={{ url_for("login") }}>Login</a></p>
         {% endif %}
     {% endif %}
+    </section>
 {% endblock %}

@@ -5,21 +5,24 @@
 {% endblock %}
 
 {% block content %}
-    <body class="background">
+    <body class="background column">
     <div class="container">
         <iframe id="music-board" src="" width="60%" height="80" frameBorder="0"
                 allow="autoplay; clipboard-write; encrypted-media" loading="lazy"></iframe>
+
         <div class="buttons-container">
             <button id="remove">Remove</button>
             <button id="generate">Generate</button>
         </div>
+
         <iframe id="history-board" src="{{ url_for('imgs') }}" width="40%" height="80" frameBorder="0"></iframe>
     </div>
+
     <div class="container">
-        <section class="tools-board">
-            <div class="row">
-                <label class="title">Shapes</label>
-                <ul class="options">
+        <section class="column tools-board">
+            <div>
+                <label>Shapes</label>
+                <ul>
                     <li class="option tool" id="rectangle">
                         <img src="/static/icons/rectangle.svg" alt="Rectangle icon">
                         <span>Rectangle</span>
@@ -38,10 +41,11 @@
                     </li>
                 </ul>
             </div>
-            <div class="row">
-                <label class="title">Options</label>
-                <ul class="options">
-                    <li class="option active tool" id="brush">
+
+            <div>
+                <label>Tools</label>
+                <ul>
+                    <li class="option tool active" id="brush">
                         <img src="/static/icons/brush.svg" alt="Brush icon">
                         <span>Brush</span>
                     </li>
@@ -49,37 +53,45 @@
                         <img src="/static/icons/eraser.svg" alt="Eraser icon">
                         <span>Eraser</span>
                     </li>
-                    <li class="option">
-                        <input type="range" id="size-slider" min="1" max="30" value="5">
+                    <li class="option tool">
+                        <input type="range" id="size-slider" min="1" max="50" value="5">
                     </li>
                 </ul>
             </div>
-            <div class="row colors">
-                <label class="title">Colors</label>
-                <ul class="options">
-                    <li class="option selected"></li>
-                    <li class="option"></li>
-                    <li class="option"></li>
-                    <li class="option"></li>
-                    <li class="option">
+
+            <div>
+                <div class="row">
+                    <label>Colors</label>
+                    <button id="fill">Fill</button>
+                </div>
+                <ul class="row">
+                    <li class="color selected"></li>
+                    <li class="color"></li>
+                    <li class="color"></li>
+                    <li class="color"></li>
+                    <li class="color">
                         <input type="color" id="color-picker" value="#FFFFFF">
                     </li>
                 </ul>
             </div>
-            <div class="row buttons">
-                <button class="clear-canvas">Clear Canvas</button>
-                <button class="generate">Generate Song</button>
+
+            <div class="buttons-container">
+                <button id="clear-canvas">Clear Canvas</button>
+                <button id="generate-song">Generate Song</button>
             </div>
         </section>
+
         <section class="drawing-board">
-            <p class="title initial-title">Draw here and generate a song!</p>
+            <p id="canvas-title">Draw here and generate a song!</p>
             <canvas></canvas>
         </section>
     </div>
+
     <footer>
         <p id="footer" style="color:#8f4a37;">Powered by Open AI and Spotify</p>
         <p style="color:#8f4a37;">Made by <a href="https://github.com/euyogi">Yogi Nam</a></p>
     </footer>
+
     <script src="/static/script.js"></script>
     </body>
 {% endblock %}

@@ -23,11 +23,12 @@ class Canvas {
         this.tool_btns = document.querySelectorAll(".tool")
         this.fill_color = document.querySelector("#fill-color")
         this.size_slider = document.querySelector("#size-slider")
-        this.color_btns = document.querySelectorAll(".colors .option")
+        this.fill = document.querySelector("#fill");
+        this.color_btns = document.querySelectorAll(".color")
         this.color_picker = document.querySelector("#color-picker")
-        this.clear_canvas = document.querySelector(".clear-canvas")
-        this.generate = document.querySelector(".generate")
-        this.initial_title = document.querySelector(".initial-title")
+        this.clear_canvas = document.querySelector("#clear-canvas")
+        this.generate = document.querySelector("#generate-song")
+        this.initial_title = document.querySelector("#canvas-title")
         this.ctx = this.canvas.getContext("2d", {willReadFrequently: true})
         this.isDrawing = false
         this.selectedTool = "brush"
@@ -40,18 +41,19 @@ class Canvas {
         this.tool_btns.forEach(btn => {
             btn.addEventListener("click", () => { // adding click event to all tool option
                 // removing active class from the previous option and adding on current clicked option
-                document.querySelector(".options .active").classList.remove("active")
+                document.querySelector(".active").classList.remove("active")
                 btn.classList.add("active")
                 this.selectedTool = btn.id
             })
         })
 
         this.size_slider.addEventListener("change", () => this.brushWidth = this.size_slider.value) // passing slider value as brushSize
+        this.fill.addEventListener("click", () => this.setCanvasBackground(this.selectedColor))
 
         this.color_btns.forEach(btn => {
             btn.addEventListener("click", () => { // adding click event to all color button
                 // removing selected class from the previous option and adding on current clicked option
-                document.querySelector(".options .selected").classList.remove("selected")
+                document.querySelector(".selected").classList.remove("selected")
                 btn.classList.add("selected")
                 // passing selected btn background color as selectedColor value
                 this.selectedColor = window.getComputedStyle(btn).getPropertyValue("background-color")
@@ -76,14 +78,15 @@ class Canvas {
         this.canvas.addEventListener("pointerdown", this.startDraw)
         this.canvas.addEventListener("pointermove", this.drawing)
         this.canvas.addEventListener("pointerup", () => this.isDrawing = false)
+        this.canvas.addEventListener("pointerout", () => this.isDrawing = false)
 
         Canvas.instance = this;
     }
 
     // All white
-    setCanvasBackground() {
+    setCanvasBackground(color = "#fff") {
         this.initial_title.classList.remove("hidden")
-        this.ctx.fillStyle = "#fff"
+        this.ctx.fillStyle = color
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.fillStyle = this.selectedColor // setting fillstyle back to the selectedColor
     }
@@ -209,4 +212,3 @@ history_board.addEventListener(("load"), () => {
     if (!history_board.contentWindow.document.querySelector("a") && !footer.innerHTML.endsWith("</a>"))
         footer.innerHTML += " | <a href='/logout'>Log Out</a>"
 })
-

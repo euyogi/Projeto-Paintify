@@ -5,16 +5,18 @@
 {% endblock %}
 
 {% block content %}
+    <div class="column full-height" style="align-items: normal;">
     {% if not logged %}
         <p><a href="/login">Login</a> to enable drawing history</p>
     {% else %}
         {% if empty %}
             <p>Empty</p>
         {% endif %}
-        <div class="image-container">
+        <div id="images-container" class="row">
             {% for img in imgs %}
                 <img src="{{ img }}" alt="Image">
             {% endfor %}
         </div>
     {% endif %}
+    </div>
 {% endblock %}

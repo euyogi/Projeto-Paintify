@@ -1,14 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 
 :root {
-  --lighter-color: #c2471a;
   --main-color: #4b2626;
+  --lighter-color: #c2471a;
+  --another-color: #8f4a37;
+
+  --border-radius: 7px;
 }
 
-/* Tag Selectors */
 * {
   font-family: "Poppins", sans-serif;
-  padding: 0;
+  padding: 0; /* li's padding */
 }
 
 a {
@@ -16,110 +18,98 @@ a {
 }
 
 body {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  justify-content: center;
-  margin: 0;
-  overflow: hidden;
-  text-align: center;
   user-select: none;
+  text-align: center; /* titles and footer */
+  margin: 0; /* no y-scrolling on history-board */
+}
+
+button, input[type="submit"] {
+  background: var(--lighter-color);
+  border: 1px solid var(--lighter-color);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0 5px;
+}
+
+button:hover, input[type="submit"]:hover {
+  background: var(--another-color);
+  border-color: var(--another-color);
+}
+
+button, input {
+  border-radius: 4px;
+  height: 30px;
+  text-align: center; /* aligned when login and signin up */
+}
+
+canvas { /* not visible but without it it'll be very small */
+  height: 100%;
+  width: 100%;
+}
+
+input {
+  border: 1px solid lightgray;
+  margin-bottom: 5px;
+}
+
+section, iframe {
+  background: white;
+  border-radius: 7px;
+}
+
+li {
+  align-items: center; /* align vertically icon and label */
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 5px;
 }
 
 p {
   margin: 0;
 }
 
-section {
-  background: #fff;
-  border-radius: 7px;
-}
-
-iframe {
-  background-color: white;
-  border-radius: 12px;
-}
-
-/* Class Selectors */
 .background {
   background-color: var(--main-color);
-  margin: 8px;
+  margin: 50px 15px 0 15px; /* margin around the page */
 }
 
 .buttons-container {
-  background: none;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  gap: 10px;
+  justify-content: center; /* center vertically */
 }
 
-.buttons .clear-canvas {
-  border: 1px solid #a9aeb2;
-  color: #6C757D;
-  transition: all 0.3s ease;
+.column {
+  align-items: center; /* center horizontally */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* center veritcally */
 }
 
-.clear-canvas:hover {
-  background: #a9aeb2;
-  color: #fff;
-}
-
-.buttons .generate {
-  background: var(--lighter-color);
-  border: 1px solid var(--lighter-color);
-  transition: all 0.3s ease;
-}
-
-.generate:hover {
-  background: #8f4a37;
-}
-
-.buttons button {
-  background: none;
-  border: none;
-  border-radius: 4px;
-  color: #fff;
-  cursor: pointer;
-  margin-bottom: 13px;
-  outline: none;
-  padding: 11px 0;
-  width: 100%;
-}
-
-.colors .option {
-  border-radius: 50%;
-  height: 20px;
-  margin-top: 3px;
-  position: relative;
-  width: 20px;
-}
-
-.colors .option:first-child.selected::before {
-  border-color: #ccc;
-}
-
-.colors .option:nth-child(1) {
+.color:nth-child(1) {
   background-color: black;
 }
 
-.colors .option:nth-child(2) {
+.color:nth-child(2) {
   background-color: red;
 }
 
-.colors .option:nth-child(3) {
+.color:nth-child(3) {
   background-color: gold;
 }
 
-.colors .option:nth-child(4) {
+.color:nth-child(4) {
   background-color: deepskyblue;
 }
 
-.colors .option:nth-child(5) {
+.color:nth-child(5) {
   background-color: white;
   border: 1px solid lightgray;
 }
 
-.colors .option.selected::before {
+.color.selected::before {
   background: seashell;
   border-radius: inherit;
   content: "";
@@ -131,150 +121,163 @@ iframe {
   width: 10px;
 }
 
-.colors .options {
-  display: flex;
-  justify-content: space-between;
-}
-
 .container {
   display: flex;
   gap: 10px;
-  max-width: 99%;
-  padding: 10px;
-  touch-action: none;
+  padding: 5px;
+  touch-action: none; /* draw with touch */
   width: 100%;
 }
 
 .disabled {
-  opacity: 0.6;
+  opacity: 50%;
   cursor: not-allowed;
   pointer-events: none;
 }
 
 .drawing-board {
   flex: 1;
-  overflow: hidden;
-  position: relative;
+  overflow: hidden; /* for some reason rounded borders? */
+  position: relative; /* make the canvas-title center relative to this */
 }
 
-.drawing-board canvas {
-  height: 100%;
-  width: 100%;
-}
-
-.image-container {
-  background-color: whitesmoke;
-  display: flex;
-  flex-direction: row;
-  overflow-y: auto;
-}
-
-.image-container img {
-  border-radius: 12px;
-  margin-right: 5px;
-}
-
-.image-container img:hover {
-  border: 7px solid lightgray;
-}
-
-.image-selected {
-  border: 6px solid lightgray;
-}
-
-.initial-title {
-  cursor: not-allowed;
-  color: lightgray;
-  font-size: 30px;
-  left: 50%;
-  pointer-events: none;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
+.full-height {
+  height: 100vh;
 }
 
 .hidden {
   visibility: hidden;
 }
 
-input, .buttons-container button {
-  border: 1px solid lightgray;
-  border-radius: 4px;
-  height: 25px;
-  margin-bottom: 5px;
-  text-align: center;
+.image-selected {
+  border: 6px solid lightgray;
 }
 
-input[type="submit"], .buttons-container button {
-  background: var(--lighter-color);
-  border: 1px solid var(--lighter-color);
-  color: white;
-  cursor: pointer;
-  padding: 0 10px;
-  transition: all 0.3s ease;
-}
-
-input[type="submit"]:hover, .buttons-container button:hover {
-  background: #8f4a37;
-  border-color: #8f4a37;
-}
-
-.option :where(span, label) {
+.option :where(span, label) { /* labels for each tool */
   color: dimgray;
   cursor: pointer;
   padding-left: 10px;
 }
 
-.option #color-picker {
+.option:is(:hover, .active) img { /* icons */
+  filter: invert(1%) sepia(30%) saturate(3000%) hue-rotate(320deg) brightness(100%) contrast(100%);
+}
+
+.option:is(:hover, .active) :where(span, label) { /* hightlight label */
+  color: var(--lighter-color);
+}
+
+.color { /* each color selector */
+  border-radius: 100%;
+  cursor: pointer;
+  height: 20px;
+  margin-top: 3px;
+  position: relative; /* make the selected circle center related to this */
+  width: 20px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: center; /* center vertically */
+}
+
+.tools-board {
+  padding: 50px 20px;
+  width: 150px;
+}
+
+#canvas-title {
+  cursor: not-allowed;
+  font-size: 30px;
+  left: 50%;
+  opacity: 20%;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#color-picker {
   cursor: pointer;
   opacity: 0;
 }
 
-.option #fill-color {
+#fill-color {
+  accent-color: var(--lighter-color);
   cursor: pointer;
   height: 16px;
-  margin: 2px;
+  margin: 0;
   width: 16px;
+}
+
+#clear-canvas, #generate-song {
+  height: 40px;
+  padding: 5px 20px;
+  width: 100%;
+}
+
+#clear-canvas, #fill {
+  background: none;
+  border: 1px solid #a9aeb2;
+  color: #6C757D;
+}
+
+#clear-canvas:hover, #fill:hover {
+  background: #a9aeb2;
+  color: #fff;
+}
+
+#fill {
+  height: min-content;
+}
+
+#images-container {
+  background-color: whitesmoke;
+  overflow-x: scroll;
+  justify-content: normal;
+}
+
+#images-container img {
+  border-radius: var(--border-radius);
+}
+
+#images-container img:hover {
+  border: var(--border-radius) solid lightgray;
 }
 
 #fill-color:checked ~ label {
   color: var(--lighter-color);
 }
 
-.option #size-slider {
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.option:is(:hover, .active) img {
-  filter: invert(1%) sepia(30%) saturate(3000%) hue-rotate(320deg) brightness(100%) contrast(100%);
-}
-
-.option:is(:hover, .active) :where(span, label) {
-  color: var(--lighter-color);
-}
-
-.row .options {
-  margin: 10px 0 0 5px;
-}
-
-.row .options .option {
-  align-items: center;
-  cursor: pointer;
-  display: flex;
-  margin-bottom: 10px;
-}
-
-.tools-board {
-  padding: 15px 22px 0;
-  width: 150px;
-}
-
-.tools-board .row {
-  margin-bottom: 20px;
-}
-
-/* ID Selectors */
 #music-board {
-  background-color: #8f4a37;
+  background-color: var(--another-color);
+}
+
+#size-slider {
+  accent-color: var(--lighter-color);
+  cursor: pointer;
+  margin: 10px 0 0 0;
+  width: 103px;
+}
+
+@media (prefers-color-scheme: dark) {
+  iframe, section {
+    color: lightgray;
+    background-color: #1c0505;
+  }
+
+  p {
+    color: lightgray;
+  }
+
+  .option :where(span, label) { /* labels for each tool */
+    color: lightgray;
+  }
+
+  input {
+    color: lightgray;
+    background: #1c0505;
+  }
 }
