@@ -347,4 +347,8 @@ p, label, span, img { /* transition in those make them fell laggy */
     flex-direction: row;
     gap: 5px;
   }
+
+  li {
+    gap: 5px;
+  }
 }
