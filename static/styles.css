@@ -332,10 +332,10 @@ p, label, span, img { /* transition in those make them fell laggy */
     width: auto;
   }
 
-  /*.tools-board div { !* shapes, tools and colors divs *!*/
-  /*  display: flex;*/
-  /*  flex-direction: column;*/
-  /*}*/
+  .tools-board div { /* stack fill's button below "Colors" */
+    display: flex;
+    flex-direction: column;
+  }
 
   .row {
     gap: 5px;
@@ -348,14 +348,13 @@ p, label, span, img { /* transition in those make them fell laggy */
   #clear-canvas, #generate-song {
     height: 50px;
     padding: 0 2px;
-    width: 100%;
   }
 
   #history-board {
-    width: 250px;
+    width: 65%;
   }
 
-  #main-container {
+  #main-container { /* padding between canvas and log out */
     padding-bottom: 0;
   }
 
