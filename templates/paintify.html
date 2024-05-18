@@ -10,12 +10,14 @@
         <iframe id="music-board" src="" height="80" frameBorder="0"
                 allow="autoplay; clipboard-write; encrypted-media" loading="lazy"></iframe>
 
-        <div class="buttons-container">
-            <button id="remove">Remove</button>
-            <button id="generate">Generate</button>
-        </div>
+        <div class="row">
+            <div class="buttons-container">
+                <button id="remove">Remove</button>
+                <button id="generate">Generate</button>
+            </div>
 
-        <iframe id="history-board" src="{{ url_for('imgs') }}" height="80" frameBorder="0"></iframe>
+            <iframe id="history-board" src="{{ url_for('imgs') }}" height="80" frameBorder="0"></iframe>
+        </div>
     </div>
 
     <div class="container">

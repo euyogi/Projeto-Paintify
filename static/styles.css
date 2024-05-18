@@ -10,7 +10,7 @@
 
 * {
   font-family: "Poppins", sans-serif;
-  padding: 0; /* li's padding */
+  padding: 0; /* for li's padding */
   transition: all 0.3s ease;
 }
 
@@ -61,11 +61,11 @@ section, iframe {
 li {
   align-items: center; /* align vertically icon and label */
   display: flex;
-  justify-content: flex-start;
+  /*justify-content: flex-start;*/
   margin-bottom: 5px;
 }
 
-p, label, span { /* transition in those make them fell laggy */
+p, label, span, img { /* transition in those make them fell laggy */
   margin: 0;
   transition: none;
 }
@@ -75,18 +75,18 @@ p, label, span { /* transition in those make them fell laggy */
   margin: 50px 15px 0 15px; /* margin around the page */
 }
 
-.buttons-container {
+.buttons-container { /* only reason is for the custom gap */
   display: flex;
   flex-direction: column;
   gap: 10px;
-  justify-content: center; /* center vertically */
+  /*justify-content: center; !* center vertically *!*/
 }
 
 .column {
   align-items: center; /* center horizontally */
   display: flex;
   flex-direction: column;
-  justify-content: center; /* center veritcally */
+  justify-content: center; /* center vertically (like on "login to enable...") */
 }
 
 .color:nth-child(1) {
@@ -172,7 +172,6 @@ p, label, span { /* transition in those make them fell laggy */
   border-radius: 100%;
   cursor: pointer;
   height: 20px;
-  margin-top: 3px;
   position: relative; /* make the selected circle center related to this */
   width: 20px;
 }
@@ -181,8 +180,9 @@ p, label, span { /* transition in those make them fell laggy */
   align-items: center; /* center verticaly */
   display: flex;
   flex-direction: row;
-  gap: 5px;
+  gap: 10px;
   justify-content: center; /* center horizontally */
+  width: 100%;
 }
 
 .tools-board {
@@ -217,7 +217,7 @@ p, label, span { /* transition in those make them fell laggy */
 #clear-canvas, #generate-song {
   height: 40px;
   padding: 5px 20px;
-  width: 100%;
+  /*width: 100%;*/
 }
 
 #clear-canvas, #fill {
@@ -255,12 +255,12 @@ p, label, span { /* transition in those make them fell laggy */
 }
 
 #history-board {
-  width: 40%;
+  width: 100%;
 }
 
 #music-board {
   background-color: var(--another-color);
-  width: 60%;
+  width: 100%;
 }
 
 #size-slider {
@@ -270,14 +270,23 @@ p, label, span { /* transition in those make them fell laggy */
   width: 103px;
 }
 
-/* Styles for smaller screens */
+/* pure workaround but it's good :) */
 @media screen and (max-width: 768px) {
+  canvas {
+    height: 420px;
+  }
+
+  ul {
+    margin-bottom: 0;
+  }
+
   li {
     display: inline;
   }
 
-  canvas {
-    height: 300px;
+  li:nth-child(4) {
+    display: flex;
+    gap: 5px;
   }
 
   .background {
@@ -290,7 +299,7 @@ p, label, span { /* transition in those make them fell laggy */
 
   .container .column {
     flex-direction: row;
-    gap: 5px;
+    gap: 15px;
   }
 
   .option span { /* labels for each tool */
@@ -298,18 +307,37 @@ p, label, span { /* transition in those make them fell laggy */
     position: absolute;
   }
 
-  .tools-board {
-    padding: 5px 0;
-    width: 100%;
+  .option label { /* label for fill color */
+    padding-left: 0;
   }
 
-  #history-board, #music-board {
-    width: 100%;
+  .tools-board {
+    padding: 5px;
+    width: auto;
+  }
+
+  .tools-board div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .row {
+    gap: 5px;
+  }
+
+  #brush, #rectangle {
+    margin-right: 5px;
   }
 
   #clear-canvas, #generate-song {
     height: 50px;
-    padding: 0;
-    width: 90%;
+    padding: 0 2px;
+    width: 100%;
+  }
+
+  #size-slider {
+    display: block;
+    margin: 0;
+    width: 80px;
   }
 }
