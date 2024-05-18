@@ -2,12 +2,17 @@ from flask import Flask, url_for, redirect, render_template, request, session, j
 from flask_sqlalchemy import SQLAlchemy
 from openai import OpenAI
 import git
+import json
 import os
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
-os.environ["SPOTIPY_CLIENT_ID"] = "c873c85352234e17817333ec4dcafe4d"
-os.environ["SPOTIPY_CLIENT_SECRET"] = "d8e45a8df24c4ac396d7e2e42285f744"
+with open("KEYS.json") as f:
+    keys = json.load(f)
+    os.environ["SPOTIPY_CLIENT_ID"] = keys["SPOTIPY_CLIENT_ID"]
+    os.environ["SPOTIPY_CLIENT_SECRET"] = keys["SPOTIPY_CLIENT_SECRET"]
+    client = OpenAI(api_key=keys["OPEN_AI_KEY"])
+
 os.environ["SPOTIPY_REDIRECT_URI"] = "https://euyogi2.pythonanywhere.com"
 
 app = Flask(__name__)
@@ -15,7 +20,6 @@ app.secret_key = "123456"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"
 
 db = SQLAlchemy(app)
-client = OpenAI(api_key="sk-proj-TJHW89j6QWKs5l0DJJnFT3BlbkFJ9poviL0wNhV2UFAnMB6t")
 spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials())
 
 
@@ -62,7 +66,7 @@ class GPT:
             model=self.__model,
             messages=[
                 {"role"   : "system",
-                 "content": "You will receive an image. Strictly tell a music name based on that image, without quotations or alike. Then, separated by one newline, describe the image with at most 10 words."},
+                 "content": "Tell a music name based on the drawing, just the name, without quotations or alike. Then, separated by one newline, describe the drawing with at most 10 words"},
                 {
                     "role"   : "user",
                     "content": [
@@ -143,7 +147,7 @@ def signup():
         return redirect(url_for("login"))
 
     if request.method == "POST":
-        name = request.form["username"]
+        name = request.form["username"].lower()
         password = request.form["password"]
 
         if User.query.filter_by(name=name).first() is None:
@@ -161,7 +165,7 @@ def login():
         return redirect(url_for("paintify"))
 
     if request.method == "POST":
-        name = request.form["username"]
+        name = request.form["username"].lower()
         password = request.form["password"]
         user = User.query.filter_by(name=name, password=password).first()
 
