@@ -275,12 +275,7 @@ p, label, span, img { /* transition in those make them fell laggy */
 /* pure workaround but it's good :) */
 @media screen and (max-width: 768px) {
   canvas {
-    height: 55vh;
-  }
-
-  footer {
-    visibility: hidden;
-    position: absolute;
+    height: 50vh;
   }
 
   ul {
@@ -297,7 +292,7 @@ p, label, span, img { /* transition in those make them fell laggy */
   }
 
   .background {
-    margin: 15px 5px 0 5px; /* margin around the page */
+    margin: 5px 5px 0 5px; /* margin around the page */
   }
 
   .container {
