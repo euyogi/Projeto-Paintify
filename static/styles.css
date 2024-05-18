@@ -12,6 +12,7 @@
   font-family: "Poppins", sans-serif;
   padding: 0; /* for li's padding */
   transition: all 0.3s ease;
+  overflow-y: hidden;
 }
 
 a {
