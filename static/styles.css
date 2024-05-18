@@ -292,6 +292,10 @@ p, label, span, img { /* transition in those make them fell laggy */
     position: absolute;
   }
 
+  button, input {
+    width: 30%;
+  }
+
   ul {
     margin: 5px 0;
   }
@@ -355,6 +359,9 @@ p, label, span, img { /* transition in those make them fell laggy */
     width: 250px;
   }
 
+  #main-container {
+    padding-bottom: 0;
+  }
   #size-slider {
     display: block;
     margin: 0;
