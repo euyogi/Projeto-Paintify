@@ -124,6 +124,14 @@ p, label, span, img { /* transition in those make them fell laggy */
   width: 10px;
 }
 
+.color { /* each color selector */
+  border-radius: 100%;
+  cursor: pointer;
+  height: 20px;
+  position: relative; /* make the selected circle center related to this */
+  width: 20px;
+}
+
 .container {
   display: flex;
   gap: 10px;
@@ -138,7 +146,7 @@ p, label, span, img { /* transition in those make them fell laggy */
 }
 
 .drawing-board {
-  /*background: transparent;*/
+  background: transparent;
   flex: 1;
   overflow: hidden; /* for some reason rounded borders? */
   position: relative; /* make the canvas-title center relative to this */
@@ -168,14 +176,6 @@ p, label, span, img { /* transition in those make them fell laggy */
 
 .option:is(:hover, .active) :where(span, label) { /* hightlight label */
   color: var(--lighter-color);
-}
-
-.color { /* each color selector */
-  border-radius: 100%;
-  cursor: pointer;
-  height: 20px;
-  position: relative; /* make the selected circle center related to this */
-  width: 20px;
 }
 
 .row {
@@ -275,7 +275,7 @@ p, label, span, img { /* transition in those make them fell laggy */
 /* pure workaround but it's good :) */
 @media screen and (max-width: 768px) {
   canvas {
-    height: 50vh;
+    height: 55vh;
   }
 
   footer {
