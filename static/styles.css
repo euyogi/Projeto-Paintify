@@ -273,7 +273,7 @@ p, label, span, img { /* transition in those make them fell laggy */
 /* pure workaround but it's good :) */
 @media screen and (max-width: 768px) {
   canvas {
-    height: 420px;
+    height: 50vh;
   }
 
   ul {
@@ -322,7 +322,7 @@ p, label, span, img { /* transition in those make them fell laggy */
   }
 
   .row {
-    gap: 5px;
+    gap: 10px;
   }
 
   #brush, #rectangle {
@@ -339,5 +339,12 @@ p, label, span, img { /* transition in those make them fell laggy */
     display: block;
     margin: 0;
     width: 80px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .container .column {
+    flex-direction: row;
+    gap: 5px;
   }
 }
