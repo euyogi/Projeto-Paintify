@@ -7,8 +7,8 @@ import os
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
-key_path = "/home/euyogi2/Trabalho-OO/KEYS.json"
-# key_path = "KEYS.json"
+# key_path = "/home/euyogi2/Trabalho-OO/KEYS.json"
+key_path = "KEYS.json"
 
 with open(key_path) as f:
     keys = json.load(f)

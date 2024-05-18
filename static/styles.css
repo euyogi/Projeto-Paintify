@@ -280,9 +280,8 @@ p, label, span { /* transition in those make them fell laggy */
     height: 300px;
   }
 
-  .option span { /* labels for each tool */
-    visibility: hidden;
-    position: absolute;
+  .background {
+    margin: 15px 5px 0 5px; /* margin around the page */
   }
 
   .container {
@@ -292,6 +291,11 @@ p, label, span { /* transition in those make them fell laggy */
   .container .column {
     flex-direction: row;
     gap: 5px;
+  }
+
+  .option span { /* labels for each tool */
+    visibility: hidden;
+    position: absolute;
   }
 
   .tools-board {
