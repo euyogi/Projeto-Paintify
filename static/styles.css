@@ -138,6 +138,7 @@ p, label, span, img { /* transition in those make them fell laggy */
 }
 
 .drawing-board {
+  background: transparent;
   flex: 1;
   overflow: hidden; /* for some reason rounded borders? */
   position: relative; /* make the canvas-title center relative to this */
@@ -272,7 +273,7 @@ p, label, span, img { /* transition in those make them fell laggy */
 }
 
 /* pure workaround but it's good :) */
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 768px) {
   canvas {
     height: 50vh;
   }
