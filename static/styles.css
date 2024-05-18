@@ -45,6 +45,7 @@ button, input {
 
 canvas { /* not visible but without it it'll be very small */
   height: 100%;
+  touch-action: none; /* draw with touch */
   width: 100%;
 }
 
@@ -126,7 +127,6 @@ p, label, span, img { /* transition in those make them fell laggy */
   display: flex;
   gap: 10px;
   padding: 5px;
-  touch-action: none; /* draw with touch */
   width: 100%;
 }
 
