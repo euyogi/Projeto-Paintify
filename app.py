@@ -62,9 +62,9 @@ class GPT:
     def __init__(self, model="gpt-4o"):
         self.__model = model
         self.__music_name = "No image has been loaded"
-        self.__image_description = "No image has been loaded"
+        self.__img_description = "No image has been loaded"
 
-    def __update(self, base64_image):
+    def loadImage(self, base64_image):
         response = client.chat.completions.create(
             model=self.__model,
             messages=[
@@ -89,9 +89,6 @@ class GPT:
         self.__music_name = content[0]
         self.__img_description = content[2]
 
-    def loadImage(self, base64_img):
-        self.__update(base64_img)
-
     def getMusicName(self):
         return self.__music_name
 
@@ -100,16 +97,11 @@ class GPT:
 
 
 def getMusicID(music_name):
-    try:
-        response = spotify.search(q=music_name, limit=1)
-    except Exception as e:
-        print(e)
-        return ""
-
+    response = spotify.search(q=music_name, limit=1)
     return response["tracks"]["items"][0]["id"]
 
 
-@app.route("/paintify", methods=["POST", "GET"])
+@app.route("/paintify", methods=["GET", "POST"])
 def paintify():
     if request.method == "POST":
         base64_img = request.json["data"]

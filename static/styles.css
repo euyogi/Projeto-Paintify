@@ -57,13 +57,12 @@ input {
 
 section, iframe {
   background: white;
-  border-radius: 7px;
+  border-radius: var(--border-radius);
 }
 
 li {
   align-items: center; /* align vertically icon and label */
   display: flex;
-  /*justify-content: flex-start;*/
   margin-bottom: 5px;
 }
 
@@ -81,7 +80,6 @@ p, label, span, img { /* transition in those make them fell laggy */
   display: flex;
   flex-direction: column;
   gap: 10px;
-  /*justify-content: center; !* center vertically *!*/
 }
 
 .column {
@@ -193,7 +191,6 @@ p, label, span, img { /* transition in those make them fell laggy */
 }
 
 #canvas-title {
-  cursor: not-allowed;
   font-size: 30px;
   left: 50%;
   opacity: 20%;
@@ -219,7 +216,6 @@ p, label, span, img { /* transition in those make them fell laggy */
 #clear-canvas, #generate-song {
   height: 40px;
   padding: 5px 20px;
-  /*width: 100%;*/
 }
 
 #clear-canvas, #fill {
@@ -237,6 +233,18 @@ p, label, span, img { /* transition in those make them fell laggy */
   height: min-content;
 }
 
+#fill-color:checked ~ label {
+  color: var(--lighter-color);
+}
+
+#footer {
+  display: inline;
+}
+
+#history-board {
+  width: 100%;
+}
+
 #images-container {
   align-items: normal; /* if we align vertically, images get too big */
   background-color: whitesmoke;
@@ -250,18 +258,6 @@ p, label, span, img { /* transition in those make them fell laggy */
 
 #images-container img:hover {
   border: var(--border-radius) solid lightgray;
-}
-
-#fill-color:checked ~ label {
-  color: var(--lighter-color);
-}
-
-#history-board {
-  width: 100%;
-}
-
-#footer {
-  display: inline;
 }
 
 #log-out {
@@ -287,13 +283,13 @@ p, label, span, img { /* transition in those make them fell laggy */
     height: 50vh;
   }
 
-  footer p {
+  footer p { /* hide footer (let only log out)*/
     visibility: hidden;
     position: absolute;
   }
 
   input {
-    width: 30%;
+    width: 30%; /* to fit */
   }
 
   ul {
@@ -301,28 +297,28 @@ p, label, span, img { /* transition in those make them fell laggy */
   }
 
   li {
-    display: inline;
+    display: inline; /* side by side icons */
   }
 
-  li:nth-child(4) {
+  li:nth-child(4) { /* fill form's checkbox */
     display: flex;
     gap: 5px;
   }
 
-  .background {
-    margin: 5px 5px 0 5px; /* margin around the page */
+  .background { /* margin around the page */
+    margin: 5px 5px 0 5px;
   }
 
-  .container {
+  .container { /* let it in 4 columns, music, history, tools and canvas */
     flex-direction: column;
   }
 
-  .container .column {
+  .container .column { /* tools column to tools row*/
     flex-direction: row;
     gap: 5px;
   }
 
-  .option span { /* labels for each tool */
+  .option span { /* hide labels */
     visibility: hidden;
     position: absolute;
   }
@@ -336,10 +332,10 @@ p, label, span, img { /* transition in those make them fell laggy */
     width: auto;
   }
 
-  .tools-board div {
-    display: flex;
-    flex-direction: column;
-  }
+  /*.tools-board div { !* shapes, tools and colors divs *!*/
+  /*  display: flex;*/
+  /*  flex-direction: column;*/
+  /*}*/
 
   .row {
     gap: 5px;

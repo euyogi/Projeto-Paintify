@@ -7,9 +7,9 @@
 {% block content %}
     <section class="column full-height">
     <form method="POST">
-        <input type=text placeholder="Username" name=username autofocus autocomplete="on" required>
-        <input type=password placeholder="Password" name=password autocomplete="on" required>
-        <input type=submit value="{{ type }}">
+        <input type=text placeholder="Username" name=username autofocus autocomplete="on" required minlength="1">
+        <input type=password placeholder="Password" name=password autocomplete="on" required minlength="1">
+        <input type=submit name="{{ type }}" value="{{ type }}">
     </form>
     {% if falhou %}
         {% if type == "Login" %}
