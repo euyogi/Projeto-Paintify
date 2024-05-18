@@ -3,7 +3,7 @@ const music_board = document.querySelector("#music-board"),
         remove_btn = document.querySelector("#remove"),
         generate_btn = document.querySelector("#generate"),
         history_board = document.querySelector("#history-board"),
-        footer = document.querySelector("#footer")
+        log_out = document.querySelector("#log-out")
 
 class Canvas {
     static instance;
@@ -209,6 +209,8 @@ history_board.addEventListener(("load"), () => {
         })
     })
 
-    if (!history_board.contentWindow.document.querySelector("a") && !footer.innerHTML.endsWith("</a>"))
-        footer.innerHTML += " | <a href='/logout'>Log Out</a>"
+    if (!history_board.contentWindow.document.querySelector("a")) {
+        log_out.style.visibility = "visible";
+        log_out.style.position = "initial";
+    }
 })

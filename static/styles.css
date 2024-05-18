@@ -260,6 +260,15 @@ p, label, span, img { /* transition in those make them fell laggy */
   width: 100%;
 }
 
+#footer {
+  display: inline;
+}
+
+#log-out {
+  visibility: hidden;
+  position: absolute;
+}
+
 #music-board {
   background-color: var(--another-color);
   width: 100%;
@@ -276,6 +285,11 @@ p, label, span, img { /* transition in those make them fell laggy */
 @media screen and (max-width: 768px) {
   canvas {
     height: 50vh;
+  }
+
+  footer p {
+    visibility: hidden;
+    position: absolute;
   }
 
   ul {
