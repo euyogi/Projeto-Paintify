@@ -146,7 +146,7 @@ p, label, span, img { /* transition in those make them fell laggy */
 }
 
 .drawing-board {
-  background: transparent;
+  font-size: 0; /* fix it being bigger than canvas */
   flex: 1;
   overflow: hidden; /* for some reason rounded borders? */
   position: relative; /* make the canvas-title center relative to this */
@@ -292,7 +292,7 @@ p, label, span, img { /* transition in those make them fell laggy */
     position: absolute;
   }
 
-  button, input {
+  input {
     width: 30%;
   }
 
@@ -362,6 +362,7 @@ p, label, span, img { /* transition in those make them fell laggy */
   #main-container {
     padding-bottom: 0;
   }
+
   #size-slider {
     display: block;
     margin: 0;
