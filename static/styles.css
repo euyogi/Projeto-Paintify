@@ -286,11 +286,6 @@ p, label, span, img, .color { /* transition in those make them fell laggy */
     height: 50vh;
   }
 
-  footer p { /* hide footer (let only log out)*/
-    visibility: hidden;
-    position: absolute;
-  }
-
   input {
     width: 30%; /* to fit */
   }
@@ -351,6 +346,11 @@ p, label, span, img, .color { /* transition in those make them fell laggy */
   #clear-canvas, #generate-song {
     height: 50px;
     padding: 0 2px;
+  }
+
+  #credits { /* hide footer (let only log out)*/
+    visibility: hidden;
+    position: absolute;
   }
 
   #history-board {
