@@ -22,7 +22,7 @@ body {
   user-select: none;
   text-align: center; /* titles and footer */
   margin: 0; /* no y-scrolling on history-board */
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 button, img, .color, #color-picker, #fill-color, #size-slider, .option, input[type="submit"] {
