@@ -152,8 +152,8 @@ class Canvas {
 
     paintify = (base64_img) => {
         this.generate.innerText = "Generating..."
-        this.generate.disabled = true
         generate_btn.innerText = "Generating..."
+        this.generate.disabled = true
         generate_btn.disabled = true
         description.innerHTML = "Checking your nice drawing..."
 
@@ -165,10 +165,11 @@ class Canvas {
             body: JSON.stringify({data: base64_img})
         }).then(response => response.json()).then(data => {
             music_board.src = "https://open.spotify.com/embed/track/" + data.id + "?utm_source=generator"
+            music_board.style.background = "transparent"
             description.innerHTML = data.description
             this.generate.innerText = "Generate Song"
-            this.generate.disabled = false
             generate_btn.innerText = "Generate"
+            this.generate.disabled = false
             generate_btn.disabled = false
             history_board.contentWindow.location.reload()
         })
@@ -180,8 +181,7 @@ const canvas = new Canvas()
 music_board.addEventListener("load", () => {
     setTimeout(() => {
         music_board.contentWindow.postMessage({command: "toggle"}, '*')
-        music_board.style.background = "transparent"
-    }, 1000)
+    }, 700)
 })
 
 remove_btn.addEventListener("click", () => {
