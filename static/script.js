@@ -4,7 +4,7 @@ const music_board = document.querySelector("#music-board"),
         generate_btn = document.querySelector("#generate"),
         history_board = document.querySelector("#history-board"),
         log_out = document.querySelector("#log-out"),
-        footer = document.querySelector("#footer")
+        description = document.querySelector("#description")
 
 class Canvas {
     static instance;
@@ -155,7 +155,7 @@ class Canvas {
         this.generate.disabled = true
         generate_btn.innerText = "Generating..."
         generate_btn.disabled = true
-        footer.innerHTML = "Checking your nice drawing..."
+        description.innerHTML = "Checking your nice drawing..."
 
         fetch(("/paintify"), {
             method: "POST",
@@ -165,7 +165,7 @@ class Canvas {
             body: JSON.stringify({data: base64_img})
         }).then(response => response.json()).then(data => {
             music_board.src = "https://open.spotify.com/embed/track/" + data.id + "?utm_source=generator"
-            footer.innerHTML = data.description
+            description.innerHTML = data.description
             this.generate.innerText = "Generate Song"
             this.generate.disabled = false
             generate_btn.innerText = "Generate"

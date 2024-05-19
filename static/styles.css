@@ -246,7 +246,7 @@ p, label, span, img, .color { /* transition in those make them fell laggy */
   color: var(--lighter-color);
 }
 
-#footer {
+#description, #powered {
   display: inline;
 }
 
@@ -272,6 +272,11 @@ p, label, span, img, .color { /* transition in those make them fell laggy */
 
 #music-board {
   background-color: var(--another-color);
+}
+
+#powered {
+  position: absolute;
+  visibility: hidden;
 }
 
 #size-slider {
@@ -348,7 +353,7 @@ p, label, span, img, .color { /* transition in those make them fell laggy */
     padding: 0 2px;
   }
 
-  #credits { /* hide footer (let only log out)*/
+  #credits, #description { /* hide footer (let only log out)*/
     visibility: hidden;
     position: absolute;
   }
@@ -365,5 +370,10 @@ p, label, span, img, .color { /* transition in those make them fell laggy */
     display: block;
     margin: 0;
     width: 50px;
+  }
+
+  #powered {
+    position: initial;
+    visibility: visible;
   }
 }
