@@ -22,7 +22,7 @@ class Canvas {
         this.color_picker = document.querySelector("#color-picker")
         this.clear_canvas = document.querySelector("#clear-canvas")
         this.generate = document.querySelector("#generate-song")
-        this.initial_title = document.querySelector("#canvas-title")
+        this.canvas_title = document.querySelector("#canvas-title")
         this.ctx = this.canvas.getContext("2d", {willReadFrequently: true})
         this.isDrawing = false
         this.selectedTool = "brush"
@@ -89,14 +89,14 @@ class Canvas {
     }
 
     setCanvasBackground = (color = "#fff") => {
-        this.initial_title.classList.remove("hidden") // shows canvas-title
+        this.canvas_title.classList.remove("hidden") // shows canvas-title
         this.ctx.fillStyle = color
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.fillStyle = this.selectedColor // setting fillstyle back to the selectedColor
     }
 
     startDraw = (e) => {
-        this.initial_title.classList.add("hidden")
+        this.canvas_title.classList.add("hidden")
         this.isDrawing = true
         this.prevMouseX = e.offsetX // passing current mouseX position as prevMouseX value
         this.prevMouseY = e.offsetY // passing current mouseY position as prevMouseY value
@@ -163,15 +163,24 @@ class Canvas {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({data: base64_img})
-        }).then(response => response.json()).then(data => {
-            music_board.src = "https://open.spotify.com/embed/track/" + data.id + "?utm_source=generator"
-            music_board.style.background = "transparent"
-            description.innerHTML = data.description
+        }).then(response => {
             this.generate.innerText = "Generate Song"
             generate_btn.innerText = "Generate"
             this.generate.disabled = false
             generate_btn.disabled = false
             history_board.contentWindow.location.reload()
+            description.innerHTML = "An error occurred :("
+
+            response.json().then(data => {
+                if (!response.ok) {
+                    alert("Open AI says: " + data.description)
+                    return
+                }
+
+                music_board.src = "https://open.spotify.com/embed/track/" + data.id + "?utm_source=generator"
+                music_board.style.background = "transparent"
+                description.innerHTML = data.description
+            })
         })
     }
 }

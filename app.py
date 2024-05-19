@@ -65,29 +65,33 @@ class GPT:
         self.__img_description = "No image has been loaded"
 
     def loadImage(self, base64_image):
-        response = client.chat.completions.create(
-            model=self.__model,
-            messages=[
-                {"role"   : "system",
-                 "content": "Tell a music name based on the drawing, just the name, without quotations or alike. Then, separated by one newline, describe the drawing with at most 10 words"},
-                {
-                    "role"   : "user",
-                    "content": [
-                        {
-                            "type"     : "image_url",
-                            "image_url": {
-                                "url"   : base64_image,
-                                "detail": "low",
+        try:
+            response = client.chat.completions.create(
+                model=self.__model,
+                messages=[
+                    {"role"   : "system",
+                     "content": "Tell a music name based on the drawing, just the name, without quotations or alike. Then, separated by one newline, describe the drawing with at most 10 words"},
+                    {
+                        "role"   : "user",
+                        "content": [
+                            {
+                                "type"     : "image_url",
+                                "image_url": {
+                                    "url"   : base64_image,
+                                    "detail": "low",
+                                }
                             }
-                        }
-                    ]
-                }
-            ]
-        )
-
-        content = response.choices[0].message.content.split("\n")
-        self.__music_name = content[0]
-        self.__img_description = content[2]
+                        ]
+                    }
+                ]
+            )
+        except Exception as e:
+            self.__music_name = "Error"
+            self.__img_description = str(e).split("message': '")[1].split('\'')[0]
+        else:
+            content = response.choices[0].message.content.split("\n")
+            self.__music_name = content[0]
+            self.__img_description = content[2]
 
     def getMusicName(self):
         return self.__music_name
@@ -115,7 +119,9 @@ def paintify():
         gpt.loadImage(base64_img)
         music_id = getMusicID(gpt.getMusicName())
         img_description = gpt.getDescription()
-        return jsonify({"id": music_id, "description": img_description})
+
+        code = 403 if gpt.getMusicName() == "Error" else 201
+        return jsonify({"id": music_id, "description": img_description}), code
 
     return render_template("paintify.html")
 
