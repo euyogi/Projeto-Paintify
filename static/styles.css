@@ -354,7 +354,7 @@ p, label, span, img, .color { /* transition in those make them fell laggy */
   }
 
   #history-board {
-    width: 65%;
+    width: 70%;
   }
 
   #main-container { /* padding between canvas and log out */
