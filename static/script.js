@@ -1,5 +1,5 @@
 const music_board = document.querySelector("#music-board"),
-        buttons_board = document.querySelector(".buttons-container"),
+        buttons_board = document.querySelector(".row .button-column"),
         remove_btn = document.querySelector("#remove"),
         generate_btn = document.querySelector("#generate"),
         history_board = document.querySelector("#history-board"),
@@ -49,6 +49,7 @@ class Canvas {
                 btn.classList.add("selected")
                 // get the painting color from the background-color
                 this.selectedColor = window.getComputedStyle(btn).getPropertyValue("background-color")
+                console.log(this.selectedColor)
             })
         })
 
@@ -73,7 +74,7 @@ class Canvas {
 
         // debouncing, so that it doesn't fire too much/fast
         let resize_timeout;
-        window.addEventListener(("resize"), () => {
+        window.addEventListener("resize", () => {
             clearTimeout(resize_timeout)
             resize_timeout = setTimeout(set_background, 400)
         })
@@ -154,6 +155,7 @@ class Canvas {
         this.generate.disabled = true
         generate_btn.innerText = "Generating..."
         generate_btn.disabled = true
+        footer.innerHTML = "Checking your nice drawing..."
 
         fetch(("/paintify"), {
             method: "POST",
@@ -175,14 +177,14 @@ class Canvas {
 
 const canvas = new Canvas()
 
-music_board.addEventListener(("load"), () => {
+music_board.addEventListener("load", () => {
     setTimeout(() => {
         music_board.contentWindow.postMessage({command: "toggle"}, '*')
         music_board.style.background = "transparent"
     }, 1000)
 })
 
-remove_btn.addEventListener(("click"), () => {
+remove_btn.addEventListener("click", () => {
     fetch(("/remove"), {
         method: "POST",
         headers: {
@@ -192,10 +194,10 @@ remove_btn.addEventListener(("click"), () => {
     }).then(() => history_board.contentWindow.location.reload())
 })
 
-generate_btn.addEventListener(("click"), () =>
+generate_btn.addEventListener("click", () =>
         canvas.paintify(history_board.contentWindow.document.querySelector(".image-selected").src))
 
-history_board.addEventListener(("load"), () => {
+history_board.addEventListener("load", () => {
     buttons_board.classList.add("disabled")
 
     let imgs = history_board.contentWindow.document.querySelectorAll("img")

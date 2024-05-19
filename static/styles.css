@@ -25,11 +25,14 @@ body {
   overflow-y: hidden;
 }
 
+button, img, .color, #color-picker, #fill-color, #size-slider, .option, input[type="submit"] {
+  cursor: pointer;
+}
+
 button, input[type="submit"] {
   background: var(--lighter-color);
   border: 1px solid var(--lighter-color);
   color: white;
-  cursor: pointer;
   padding: 0 5px;
 }
 
@@ -45,9 +48,18 @@ button, input {
 }
 
 canvas { /* not visible but without it it'll be very small */
+  cursor: crosshair;
   height: 100%;
   touch-action: none; /* draw with touch */
+}
+
+canvas, .row, .container, #music-board, #history-board {
   width: 100%;
+}
+
+footer {
+  color: var(--another-color);
+  margin-top: -5px; /* cancel column's gap */
 }
 
 input {
@@ -55,9 +67,10 @@ input {
   margin-bottom: 5px;
 }
 
-section, iframe {
+iframe, section {
   background: white;
   border-radius: var(--border-radius);
+  border-width: 0;
 }
 
 li {
@@ -66,7 +79,7 @@ li {
   margin-bottom: 5px;
 }
 
-p, label, span, img { /* transition in those make them fell laggy */
+p, label, span, img, .color { /* transition in those make them fell laggy */
   margin: 0;
   transition: none;
 }
@@ -76,17 +89,21 @@ p, label, span, img { /* transition in those make them fell laggy */
   margin: 50px 15px 0 15px; /* margin around the page */
 }
 
-.buttons-container { /* only reason is for the custom gap */
+.button-column {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.column {
-  align-items: center; /* center horizontally */
+.column, .row {
+  align-items: center; /* center horizontally/vertically */
   display: flex;
+  justify-content: center; /* center vertically/horizontally (like on "login to enable...") */
+  gap: 10px;
+}
+
+.column {
   flex-direction: column;
-  justify-content: center; /* center vertically (like on "login to enable...") */
 }
 
 .color:nth-child(1) {
@@ -124,7 +141,6 @@ p, label, span, img { /* transition in those make them fell laggy */
 
 .color { /* each color selector */
   border-radius: 100%;
-  cursor: pointer;
   height: 20px;
   position: relative; /* make the selected circle center related to this */
   width: 20px;
@@ -133,13 +149,14 @@ p, label, span, img { /* transition in those make them fell laggy */
 .container {
   display: flex;
   gap: 10px;
-  padding: 5px;
-  width: 100%;
 }
 
 .disabled {
-  opacity: 50%;
   cursor: not-allowed;
+}
+
+.disabled button {
+  opacity: 50%;
   pointer-events: none;
 }
 
@@ -164,25 +181,19 @@ p, label, span, img { /* transition in those make them fell laggy */
 
 .option :where(span, label) { /* labels for each tool */
   color: dimgray;
-  cursor: pointer;
   padding-left: 10px;
 }
 
-.option:is(:hover, .active) img { /* icons */
-  filter: invert(1%) sepia(30%) saturate(3000%) hue-rotate(320deg) brightness(100%) contrast(100%);
-}
-
-.option:is(:hover, .active) :where(span, label) { /* hightlight label */
+.option:is(:hover, .active) :where(span, label) { /* hightlight labels */
   color: var(--lighter-color);
 }
 
+.option:is(:hover, .active) img { /* highlight icons */
+  filter: invert(1%) sepia(30%) saturate(3000%) hue-rotate(320deg) brightness(100%) contrast(100%);
+}
+
 .row {
-  align-items: center; /* center verticaly */
-  display: flex;
   flex-direction: row;
-  gap: 10px;
-  justify-content: center; /* center horizontally */
-  width: 100%;
 }
 
 .tools-board {
@@ -201,13 +212,11 @@ p, label, span, img { /* transition in those make them fell laggy */
 }
 
 #color-picker {
-  cursor: pointer;
   opacity: 0;
 }
 
 #fill-color {
   accent-color: var(--lighter-color);
-  cursor: pointer;
   height: 16px;
   margin: 0;
   width: 16px;
@@ -241,10 +250,6 @@ p, label, span, img { /* transition in those make them fell laggy */
   display: inline;
 }
 
-#history-board {
-  width: 100%;
-}
-
 #images-container {
   align-items: normal; /* if we align vertically, images get too big */
   background-color: whitesmoke;
@@ -267,12 +272,10 @@ p, label, span, img { /* transition in those make them fell laggy */
 
 #music-board {
   background-color: var(--another-color);
-  width: 100%;
 }
 
 #size-slider {
   accent-color: var(--lighter-color);
-  cursor: pointer;
   margin: 10px 0 0 0;
   width: 103px;
 }

@@ -7,16 +7,16 @@
 {% block content %}
     <body class="background column">
     <div class="container">
-        <iframe id="music-board" src="" height="80" frameBorder="0"
+        <iframe id="music-board" src="" height="80"
                 allow="autoplay; clipboard-write; encrypted-media" loading="lazy"></iframe>
 
         <div class="row">
-            <div class="buttons-container">
+            <div class="button-column">
                 <button id="remove">Remove</button>
                 <button id="generate">Generate</button>
             </div>
 
-            <iframe id="history-board" src="{{ url_for('imgs') }}" height="80" frameBorder="0"></iframe>
+            <iframe id="history-board" src="{{ url_for('imgs') }}" height="80"></iframe>
         </div>
     </div>
 
@@ -55,7 +55,7 @@
                         <img src="/static/icons/eraser.svg" alt="Eraser icon">
                         <span>Eraser</span>
                     </li>
-                    <li class="option tool">
+                    <li class="option">
                         <input type="range" id="size-slider" min="1" max="50" value="5">
                     </li>
                 </ul>
@@ -77,7 +77,7 @@
                 </ul>
             </div>
 
-            <div class="buttons-container">
+            <div class="button-column">
                 <button id="clear-canvas">Clear Canvas</button>
                 <button id="generate-song">Generate Song</button>
             </div>
@@ -90,9 +90,9 @@
     </div>
 
     <footer>
-        <p id="footer" style="color:#8f4a37;">Powered by Open AI and Spotify</p>
+        <p id="footer">Powered with Open AI and Spotify</p>
         <a id="log-out" href="/logout">Log Out</a>
-        <p style="color:#8f4a37;">Made by <a href="https://github.com/euyogi">Yogi Nam</a></p>
+        <p>Made by <a href="https://github.com/euyogi">Yogi Nam</a></p>
     </footer>
 
     <script src="/static/script.js"></script>
