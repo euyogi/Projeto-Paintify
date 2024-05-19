@@ -173,7 +173,7 @@ class Canvas {
 
             response.json().then(data => {
                 if (!response.ok) {
-                    alert("Open AI says: " + data.description)
+                    alert("Open AI says:\n\n" + data.description + "\n\nPlease try again.")
                     return
                 }
 
