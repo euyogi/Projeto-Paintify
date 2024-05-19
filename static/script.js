@@ -214,8 +214,6 @@ history_board.addEventListener("load", () => {
         })
     })
 
-    if (!history_board.contentWindow.document.querySelector("a")) {
-        log_out.style.visibility = "visible";
-        log_out.style.position = "initial";
-    }
+    if (!history_board.contentWindow.document.querySelector("a"))
+        log_out.classList.remove("hidden")
 })

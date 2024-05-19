@@ -171,7 +171,7 @@ p, label, span, img, .color { /* transition in those make them fell laggy */
 }
 
 .hidden {
-  visibility: hidden;
+  display: none;
 }
 
 .image-selected {
@@ -264,18 +264,12 @@ p, label, span, img, .color { /* transition in those make them fell laggy */
   border: var(--border-radius) solid lightgray;
 }
 
-#log-out {
-  visibility: hidden;
-  position: absolute;
+#powered {
+  display: none;
 }
 
 #music-board {
   background-color: var(--another-color);
-}
-
-#powered {
-  position: absolute;
-  visibility: hidden;
 }
 
 #size-slider {
@@ -320,9 +314,8 @@ p, label, span, img, .color { /* transition in those make them fell laggy */
     gap: 5px;
   }
 
-  .option span { /* hide labels */
-    visibility: hidden;
-    position: absolute;
+  .option span, #credits, #description { /* hide labels and footer */
+    display: none;
   }
 
   .option label { /* label for fill color */
@@ -352,11 +345,6 @@ p, label, span, img, .color { /* transition in those make them fell laggy */
     padding: 0 2px;
   }
 
-  #credits, #description { /* hide footer (let only log out)*/
-    visibility: hidden;
-    position: absolute;
-  }
-
   #history-board {
     width: 70%;
   }
@@ -372,7 +360,6 @@ p, label, span, img, .color { /* transition in those make them fell laggy */
   }
 
   #powered {
-    position: initial;
-    visibility: visible;
+    display: initial;
   }
 }
