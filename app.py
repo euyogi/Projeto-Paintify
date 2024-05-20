@@ -1,29 +1,27 @@
 from flask import Flask, url_for, redirect, render_template, request, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from openai import OpenAI
-import git
-import json
-import os
-import spotipy
+from git import Repo
+from json import load
+from os import environ
+from spotipy import Spotify
 from spotipy.oauth2 import SpotifyClientCredentials
 
-key_path = "/home/euyogi2/Trabalho-OO/KEYS.json"
-# key_path = "KEYS.json"
-
-with open(key_path) as f:
-    keys = json.load(f)
-    os.environ["SPOTIPY_CLIENT_ID"] = keys["SPOTIPY_CLIENT_ID"]
-    os.environ["SPOTIPY_CLIENT_SECRET"] = keys["SPOTIPY_CLIENT_SECRET"]
+# setting up
+KEYS_PATH = "KEYS.json" if environ["LOCAL"] else "/home/euyogi2/Trabalho-OO/KEYS.json"
+with open(KEYS_PATH) as f:
+    keys = load(f)
+    environ["SPOTIPY_CLIENT_ID"] = keys["SPOTIPY_CLIENT_ID"]
+    environ["SPOTIPY_CLIENT_SECRET"] = keys["SPOTIPY_CLIENT_SECRET"]
     client = OpenAI(api_key=keys["OPEN_AI_KEY"])
-
-os.environ["SPOTIPY_REDIRECT_URI"] = "https://euyogi2.pythonanywhere.com"
 
 app = Flask(__name__)
 app.secret_key = "123456"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"
 
 db = SQLAlchemy(app)
-spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials())
+environ["SPOTIPY_REDIRECT_URI"] = "https://euyogi2.pythonanywhere.com"
+spotify = Spotify(client_credentials_manager=SpotifyClientCredentials())
 
 
 class Image(db.Model):
@@ -57,6 +55,7 @@ class GPT:
     def __new__(cls, model="gpt-4o"):
         if GPT.__instance is None:
             GPT.__instance = super().__new__(cls)
+
         return GPT.__instance
 
     def __init__(self, model="gpt-4o"):
@@ -150,8 +149,9 @@ def signup():
     if request.method == "POST":
         name = request.form["username"].lower()
         password = request.form["password"]
+        user = User.query.filter_by(name=name).first()
 
-        if User.query.filter_by(name=name).first() is None:
+        if user is None:
             user = User(name, password)
             db.session.add(user)
             db.session.commit()
@@ -189,7 +189,6 @@ def remove():
     img = Image.query.filter_by(data=base64_img).first()
     db.session.delete(img)
     db.session.commit()
-
     return jsonify({"message": "Image deleted successfully"}), 200
 
 
@@ -197,10 +196,9 @@ def remove():
 @app.route("/update", methods=["POST"])
 def webhook():
     if request.method == "POST":
-        repo = git.Repo("/home/euyogi2/Trabalho-OO")
+        repo = Repo("/home/euyogi2/Trabalho-OO")
         origin = repo.remotes.origin
         origin.pull()
-
         return "Updated PythonAnywhere successfully", 200
     else:
         return "Wrong event type", 400

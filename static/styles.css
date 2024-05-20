@@ -25,7 +25,7 @@ body {
   overflow: hidden;
 }
 
-button, img, .color, #color-picker, #fill-color, #size-slider, .option, input[type="submit"] {
+button, img, .color, #color-picker, #fill-form, #size-slider, .option, input[type="submit"] {
   cursor: pointer;
 }
 
@@ -214,7 +214,7 @@ p, label, span, img, .color { /* transition in those make them fell laggy */
   opacity: 0;
 }
 
-#fill-color {
+#fill-form {
   accent-color: var(--lighter-color);
   height: 16px;
   margin: 0;
@@ -241,7 +241,7 @@ p, label, span, img, .color { /* transition in those make them fell laggy */
   height: min-content;
 }
 
-#fill-color:checked ~ label {
+#fill-form:checked ~ label {
   color: var(--lighter-color);
 }
 
