@@ -8,7 +8,7 @@ from spotipy import Spotify
 from spotipy.oauth2 import SpotifyClientCredentials
 
 # setting up
-KEYS_PATH = "KEYS.json" if environ["LOCAL"] else "/home/euyogi2/Trabalho-OO/KEYS.json"
+KEYS_PATH = "KEYS.json" if "LOCAL" in environ else "/home/euyogi2/Trabalho-OO/KEYS.json"
 with open(KEYS_PATH) as f:
     keys = load(f)
     environ["SPOTIPY_CLIENT_ID"] = keys["SPOTIPY_CLIENT_ID"]
