@@ -140,7 +140,7 @@ class CanvasCore {
     }
 
     _drawRect = (e) => {
-        this.ctx.lineJoin = "round"
+        this.ctx.lineJoin = "mitter"
         this.ctx.rect(e.offsetX, e.offsetY, this.prevMouseX - e.offsetX, this.prevMouseY - e.offsetY)
     }
 
