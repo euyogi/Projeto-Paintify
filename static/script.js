@@ -253,7 +253,7 @@ class PaintifyCanvas extends CanvasCore {
     paintify = (base64_img) => {
         this.generate_song.innerText = "Generating..."
         this.generate_song.disabled = true
-        this.description.innerHTML = "Checking your nice _drawing..."
+        this.description.innerHTML = "Checking your nice drawing..."
         this.loading.classList.remove("hidden")
         this.canvas.style.opacity = "30%"
 
