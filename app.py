@@ -21,7 +21,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"
 
 db = SQLAlchemy(app)
 environ["SPOTIPY_REDIRECT_URI"] = "https://euyogi2.pythonanywhere.com"
-spotify = Spotify(client_credentials_manager=SpotifyClientCredentials())
+spotify_core = Spotify(client_credentials_manager=SpotifyClientCredentials())
 
 
 class Image(db.Model):
@@ -49,10 +49,27 @@ class User(db.Model):
         self.password = password
 
 
+class SpotifyDecorator:
+    __instance = None
+
+    def __new__(cls, spotify):
+        if SpotifyDecorator.__instance is None:
+            SpotifyDecorator.__instance = super().__new__(cls)
+
+        return SpotifyDecorator.__instance
+
+    def __init__(self, spotify):
+        self._spotify = spotify
+
+    def getMusicID(self, music_name):
+        response = self._spotify.search(q=music_name, limit=1)
+        return response["tracks"]["items"][0]["id"]
+
+
 class GPT:
     __instance = None
 
-    def __new__(cls, model="gpt-4o"):
+    def __new__(cls):
         if GPT.__instance is None:
             GPT.__instance = super().__new__(cls)
 
@@ -99,11 +116,6 @@ class GPT:
         return self.__img_description
 
 
-def getMusicID(music_name):
-    response = spotify.search(q=music_name, limit=1)
-    return response["tracks"]["items"][0]["id"]
-
-
 @app.route("/paintify", methods=["GET", "POST"])
 def paintify():
     if request.method == "POST":
@@ -116,11 +128,11 @@ def paintify():
 
         gpt = GPT()
         gpt.loadImage(base64_img)
-        music_id = getMusicID(gpt.getMusicName())
+        spotify = SpotifyDecorator(spotify_core)
         img_description = gpt.getDescription()
 
         code = 403 if gpt.getMusicName() == "Error" else 201
-        return jsonify({"id": music_id, "description": img_description}), code
+        return jsonify({"id": spotify.getMusicID(gpt.getMusicName()), "description": img_description}), code
 
     return render_template("paintify.html")
 
@@ -204,8 +216,7 @@ def webhook():
         return "Wrong event type", 400
 
 
-with app.app_context():
-    db.create_all()
-
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
     app.run()

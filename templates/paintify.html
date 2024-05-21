@@ -14,9 +14,9 @@
             allow="autoplay; clipboard-write; encrypted-media"></iframe>
 
     <div class="row">
-        <div class="button-column">
+        <div id="buttons-board" class="button-column disabled">
             <button id="remove">Remove</button>
-            <button id="to-canvas">Redraw</button>
+            <button id="redraw">Redraw</button>
         </div>
 
         <iframe id="history-board" src="{{ url_for('imgs') }}" height="80"></iframe>
@@ -75,7 +75,7 @@
                 <li class="color"></li>
                 <li class="color"></li>
                 <li class="color">
-                    <input type="color" id="color-picker" value="#FFFFFF">
+                    <input type="color" id="color-picker" value="#ffffff">
                 </li>
             </ul>
         </div>

@@ -2,7 +2,7 @@ class CanvasCore {
     constructor(canvas, canvas_title) {
         this.canvas = canvas
         this.canvas_title = canvas_title
-        this.ctx = this.canvas.getContext("2d", {willReadFrequently: false, imageSmoothingQuality: "high"})
+        this.ctx = this.canvas.getContext("2d", {alpha: false, willReadFrequently: false})
         this.is_drawing = false
         this.fill_form = false
         this.selected_tool = "brush"
@@ -23,33 +23,29 @@ class CanvasCore {
         this.canvas.onpointermove = this._drawing
         this.canvas.onpointerup = this.canvas.onpointerout = () => this.is_drawing = false
 
-        window.onkeydown = (e) => {
-            let img = new Image()
-            if (e.ctrlKey && e.key === 'z') {
-                if (this.backup.length > 0) {
-                    img.onload = () => {
-                        this.backup_backup.push(img)
-                    }
-                    img.src = this.canvas.toDataURL()
-                    this.imageToCanvas(this.backup.pop())
+        const double_backup = (backup_container1, backup_container2, img) => {
+            if (backup_container1.length > 0) {
+                img.onload = () => {
+                    backup_container2.push(img)
                 }
+                img.src = this.canvas.toDataURL()
+                this.imageToCanvas(backup_container1.pop())
+            }
+        }
+
+        window.addEventListener("keydown", (e) => {
+            let img = new Image()
+            if (e.ctrlKey && "zy".includes(e.key)) {
+                e.preventDefault()
+                if (e.key === 'z')
+                    double_backup(this.backup, this.backup_backup, img)
+                else
+                    double_backup(this.backup_backup, this.backup, img)
 
                 if (this.backup.length === 0)
                     this.canvas_title.classList.remove("hidden")
-
-                e.preventDefault()
-            } else if (e.ctrlKey && e.key === 'y') {
-                if (this.backup_backup.length > 0) {
-                    img.onload = () => {
-                        this.backup.push(img)
-                    }
-                    img.src = this.canvas.toDataURL()
-                    this.imageToCanvas(this.backup_backup.pop())
-                }
-
-                e.preventDefault()
             }
-        }
+        })
 
         this._setDimensions()
         this.fillCanvas()
@@ -58,6 +54,7 @@ class CanvasCore {
     fillCanvas = (color = "#fff") => {
         this.canvas_title.classList.remove("hidden") // shows canvas-title
         this.ctx.fillStyle = color
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.fillStyle = this.selected_color // setting fillstyle back to the selected_color
         this.snapshot = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
@@ -67,12 +64,12 @@ class CanvasCore {
         this.fillCanvas()
 
         let scale = Math.min(this.canvas.width / img.width, this.canvas.height / img.height),
-                width = img.width * scale,
-                height = img.height * scale
+                width = Math.round(img.width * scale),
+                height = Math.round(img.height * scale)
 
-        // Calculate the position to start _drawing the image, centered in the canvas
-        let x = (this.canvas.width - width) / 2;
-        let y = (this.canvas.height - height) / 2;
+        // Calculate the position to start drawing the image, centered in the canvas
+        let x = Math.round((this.canvas.width - width) / 2);
+        let y = Math.round((this.canvas.height - height) / 2);
         this.ctx.drawImage(img, x, y, width, height);
         this.canvas_title.classList.add("hidden")
     }
@@ -101,13 +98,15 @@ class CanvasCore {
 
         this.canvas_title.classList.add("hidden")
         this.is_drawing = true
-        this.prevMouseX = e.offsetX // passing current mouseX position as prevMouseX value
-        this.prevMouseY = e.offsetY // passing current mouseY position as prevMouseY value
+        this.prevMouseX = e.offsetX
+        this.prevMouseY = e.offsetY
         this.ctx.beginPath() // creating new path to draw
-        this.ctx.lineWidth = this.brush_width // passing brushSize as line width
-        this.ctx.strokeStyle = this.selected_color // passing selected_color as stroke style
-        this.ctx.fillStyle = this.selected_color // passing selected_color as fill style
-        // copying canvas data & passing as snapshot value.. this avoids dragging the image
+        this.ctx.lineWidth = this.brush_width
+        this.ctx.strokeStyle = this.selected_color
+        this.ctx.fillStyle = this.selected_color// passing selected_color as fill style
+        this.ctx.lineCap = "round"
+        this.ctx.lineJoin = "round"
+        // copying canvas data & passing as snapshot value.. this avoids dragging
         this.snapshot = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
     }
 
@@ -116,17 +115,16 @@ class CanvasCore {
 
         this.ctx.putImageData(this.snapshot, 0, 0) // adding copied canvas data on to this canvas
 
-        if (this.selected_tool === "brush" || this.selected_tool === "eraser") {
-            this.ctx.strokeStyle = this.selected_tool === "eraser" ? "#fff" : this.selected_color
+        if (this.selected_tool[0] === 'b' || this.selected_tool[0] === 'e') {
+            this.ctx.strokeStyle = this.selected_tool[0] === 'e' ? "#fff" : this.selected_color
             this.ctx.lineTo(e.offsetX, e.offsetY) // creating line according to the mouse pointer
-            this.ctx.stroke() // _drawing/filling line with color
+            this.ctx.stroke() // drawing/filling line with color
         } else {
             this.ctx.beginPath()
 
-            if (this.selected_tool === "line") {
+            if (this.selected_tool[0] === 'l')
                 this._drawLine(e)
-                this.ctx.stroke()
-            } else if (this.selected_tool === "rectangle")
+            else if (this.selected_tool[0] === 'r')
                 this._drawRect(e)
             else
                 this._drawCircle(e)
@@ -138,9 +136,11 @@ class CanvasCore {
     _drawLine = (e) => {
         this.ctx.moveTo(this.prevMouseX, this.prevMouseY) // moving line to the mouse pointer
         this.ctx.lineTo(e.offsetX, e.offsetY) // creating line according to the mouse pointer
+        this.ctx.stroke()
     }
 
     _drawRect = (e) => {
+        this.ctx.lineJoin = "round"
         this.ctx.rect(e.offsetX, e.offsetY, this.prevMouseX - e.offsetX, this.prevMouseY - e.offsetY)
     }
 
@@ -168,9 +168,9 @@ class PaintifyCanvas extends CanvasCore {
         this.clear_canvas = document.querySelector("#clear-canvas")
         this.generate_song = document.querySelector("#generate-song")
         this.music_board = document.querySelector("#music-board")
-        this.buttons_board = document.querySelector(".row .button-column")
+        this.buttons_board = document.querySelector("#buttons-board")
         this.remove = document.querySelector("#remove")
-        this.to_canvas = document.querySelector("#to-canvas")
+        this.redraw = document.querySelector("#redraw")
         this.history_board = document.querySelector("#history-board")
         this.log_out = document.querySelector("#log-out")
         this.description = document.querySelector("#description")
@@ -196,30 +196,39 @@ class PaintifyCanvas extends CanvasCore {
             }).then(() => this.history_board.contentWindow.location.reload())
         }
 
-        this.to_canvas.onclick = () => {
+        const remove_img_event = (e) => {
+            if (e.key === "Delete" && !this.buttons_board.classList.contains("disabled"))
+                this.remove.click()
+        }
+        window.addEventListener("keydown", remove_img_event)
+
+        this.redraw.onclick = () => {
             let img = this.history_board.contentWindow.document.querySelector(".image-selected")
             this.imageToCanvas(img)
         }
 
         this.history_board.onload = () => {
-            this.buttons_board.classList.add("disabled")
+            setTimeout(() => {
+                this.history_board.contentWindow.window.onkeydown = remove_img_event
+                this.buttons_board.classList.add("disabled")
 
-            let imgs = this.history_board.contentWindow.document.querySelectorAll("img")
+                let imgs = this.history_board.contentWindow.document.querySelectorAll("img")
 
-            imgs.forEach(img => {
-                img.onclick = () => {
-                    let selected_img = this.history_board.contentWindow.document.querySelector(".image-selected")
+                imgs.forEach(img => {
+                    img.onclick = () => {
+                        let selected_img = this.history_board.contentWindow.document.querySelector(".image-selected")
 
-                    if (selected_img)
-                        selected_img.classList.remove("image-selected")
+                        if (selected_img)
+                            selected_img.classList.remove("image-selected")
 
-                    img.classList.add("image-selected")
-                    this.buttons_board.classList.remove("disabled")
-                }
-            })
+                        img.classList.add("image-selected")
+                        this.buttons_board.classList.remove("disabled")
+                    }
+                })
 
-            if (!this.history_board.contentWindow.document.querySelector("a"))
-                this.log_out.classList.remove("hidden")
+                if (!this.history_board.contentWindow.document.querySelector("a"))
+                    this.log_out.classList.remove("hidden")
+            }, 700)
         }
 
         this.tool_btns.forEach(btn => {
@@ -241,7 +250,7 @@ class PaintifyCanvas extends CanvasCore {
             }
         })
 
-        this.color_picker.onchange = () => {
+        this.color_picker.onclick = this.color_picker.onchange = () => {
             // our parent is actually the round color button, so simulate it's functionality
             this.color_picker.parentElement.style.background = this.color_picker.value
             this.color_picker.parentElement.click()

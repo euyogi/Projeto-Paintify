@@ -122,7 +122,7 @@ p, form, label, span, img, .color, #color-picker { /* transition in those make t
 }
 
 .color:nth-child(5) {
-  background-color: white;
+  background: linear-gradient(to right, white 50%, black 50%);
   border: 1px solid lightgray;
 }
 
