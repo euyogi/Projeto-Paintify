@@ -1,13 +1,4 @@
-{% extends "template.html" %}
-
-{% block title %}
-    <Title>Users</Title>
-{% endblock %}
-
-{% block content %}
-    {% for user in users %}
-        ID: {{ user.id }}, {{ user.name }}, {{ '*' * user.password|length }}
-        <br>
-    {% endfor %}
-{% endblock %}
-
+{% for user in users %}
+    ID: {{ user.id }}, {{ user.name }}, {{ '*' * user.password|length }}
+    <br>
+{% endfor %}

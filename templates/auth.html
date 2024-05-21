@@ -1,11 +1,6 @@
-{% extends "template.html" %}
-
-{% block title %}
-    <Title>Auth</Title>
-{% endblock %}
-
-{% block content %}
-    <section class="column full-height">
+<!DOCTYPE html>
+<link href="/static/styles.css" rel="stylesheet">
+<section class="column full-height">
     <form method="POST">
         <input type=text placeholder="Username" name=username autofocus autocomplete="on" required minlength="1">
         <input type=password placeholder="Password" name=password autocomplete="on" required minlength="1">
@@ -25,5 +20,4 @@
             <p>Has an account? <a href={{ url_for("login") }}>Login</a></p>
         {% endif %}
     {% endif %}
-    </section>
-{% endblock %}
+</section>

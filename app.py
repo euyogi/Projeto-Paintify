@@ -69,7 +69,7 @@ class GPT:
                 model=self.__model,
                 messages=[
                     {"role"   : "system",
-                     "content": "Tell a music name based on the drawing, just the name, without quotations or alike. Then, separated by one newline, describe the drawing with at most 10 words"},
+                     "content": "Tell a music name based on the _drawing, just the name, without quotations or alike. Then, separated by one newline, describe the _drawing with at most 10 words"},
                     {
                         "role"   : "user",
                         "content": [

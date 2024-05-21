@@ -1,101 +1,104 @@
-{% extends "template.html" %}
-
-{% block title %}
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <meta name="theme-color" content="#8f4a37">
+    <link href="/static/styles.css" rel="stylesheet">
+    <link rel="icon" href="/static/icons/favicon.ico" type="image/x-icon">
     <Title>paintify</Title>
-{% endblock %}
+</head>
+<body class="background column">
+<div class="container">
+    <iframe id="music-board" height="80"
+            allow="autoplay; clipboard-write; encrypted-media"></iframe>
 
-{% block content %}
-    <body class="background column">
-    <div class="container">
-        <iframe id="music-board" height="80"
-                allow="autoplay; clipboard-write; encrypted-media"></iframe>
-
-        <div class="row">
-            <div class="button-column">
-                <button id="remove">Remove</button>
-                <button id="generate">Generate</button>
-            </div>
-
-            <iframe id="history-board" src="{{ url_for('imgs') }}" height="80"></iframe>
+    <div class="row">
+        <div class="button-column">
+            <button id="remove">Remove</button>
+            <button id="to-canvas">Redraw</button>
         </div>
+
+        <iframe id="history-board" src="{{ url_for('imgs') }}" height="80"></iframe>
     </div>
+</div>
 
-    <div id="main-container" class="container">
-        <section class="column tools-board">
-            <div>
-                <label>Shapes</label>
-                <ul>
-                    <li class="option tool" id="rectangle">
-                        <img src="/static/icons/rectangle.svg" alt="Rectangle icon">
-                        <span>Rectangle</span>
-                    </li>
-                    <li class="option tool" id="circle">
-                        <img src="/static/icons/circle.svg" alt="Circle icon">
-                        <span>Circle</span>
-                    </li>
-                    <li class="option tool" id="line">
-                        <img src="/static/icons/line.svg" alt="Line icon">
-                        <span>Line</span>
-                    </li>
-                    <li class="option">
-                        <input type="checkbox" id="fill-form">
-                        <label for="fill-form">Fill form</label>
-                    </li>
-                </ul>
+<div id="main-container" class="container">
+    <section class="column tools-board">
+        <div>
+            <label>Shapes</label>
+            <ul>
+                <li class="option tool" id="rectangle">
+                    <img src="/static/icons/rectangle.svg" alt="Rectangle icon">
+                    <span>Rectangle</span>
+                </li>
+                <li class="option tool" id="circle">
+                    <img src="/static/icons/circle.svg" alt="Circle icon">
+                    <span>Circle</span>
+                </li>
+                <li class="option tool" id="line">
+                    <img src="/static/icons/line.svg" alt="Line icon">
+                    <span>Line</span>
+                </li>
+                <li class="option">
+                    <input type="checkbox" id="fill-form">
+                    <label for="fill-form">Fill form</label>
+                </li>
+            </ul>
+        </div>
+
+        <div>
+            <label>Tools</label>
+            <ul>
+                <li class="option tool active" id="brush">
+                    <img src="/static/icons/brush.svg" alt="Brush icon">
+                    <span>Brush</span>
+                </li>
+                <li class="option tool" id="eraser">
+                    <img src="/static/icons/eraser.svg" alt="Eraser icon">
+                    <span>Eraser</span>
+                </li>
+                <li class="option">
+                    <input type="range" id="size-slider" min="1" max="50" value="5">
+                </li>
+            </ul>
+        </div>
+
+        <div>
+            <div class="row">
+                <label>Colors</label>
+                <button id="fill">Fill</button>
             </div>
+            <ul class="row">
+                <li class="color selected"></li>
+                <li class="color"></li>
+                <li class="color"></li>
+                <li class="color"></li>
+                <li class="color">
+                    <input type="color" id="color-picker" value="#FFFFFF">
+                </li>
+            </ul>
+        </div>
 
-            <div>
-                <label>Tools</label>
-                <ul>
-                    <li class="option tool active" id="brush">
-                        <img src="/static/icons/brush.svg" alt="Brush icon">
-                        <span>Brush</span>
-                    </li>
-                    <li class="option tool" id="eraser">
-                        <img src="/static/icons/eraser.svg" alt="Eraser icon">
-                        <span>Eraser</span>
-                    </li>
-                    <li class="option">
-                        <input type="range" id="size-slider" min="1" max="50" value="5">
-                    </li>
-                </ul>
-            </div>
+        <div class="button-column">
+            <button id="clear-canvas">Clear Canvas</button>
+            <button id="generate-song">Generate Song</button>
+        </div>
+    </section>
 
-            <div>
-                <div class="row">
-                    <label>Colors</label>
-                    <button id="fill">Fill</button>
-                </div>
-                <ul class="row">
-                    <li class="color selected"></li>
-                    <li class="color"></li>
-                    <li class="color"></li>
-                    <li class="color"></li>
-                    <li class="color">
-                        <input type="color" id="color-picker" value="#FFFFFF">
-                    </li>
-                </ul>
-            </div>
+    <section class="drawing-board">
+        <p id="canvas-title">Draw here and click generate song!</p>
+        <img id="loading" class="hidden" src="/static/images/load_animation.gif" alt="Loading animation">
+        <canvas></canvas>
+    </section>
+</div>
 
-            <div class="button-column">
-                <button id="clear-canvas">Clear Canvas</button>
-                <button id="generate-song">Generate Song</button>
-            </div>
-        </section>
+<footer>
+    <p id="powered">Powered with Open AI and Spotify</p>
+    <p id="description">Powered with Open AI and Spotify</p>
+    <a id="log-out" class="hidden" href="/logout">Log Out</a>
+    <p id="credits">Made by <a href="https://github.com/euyogi">Yogi Nam</a></p>
+</footer>
 
-        <section class="drawing-board">
-            <p id="canvas-title">Draw here and click generate_song song!</p>
-            <canvas></canvas>
-        </section>
-    </div>
-
-    <footer>
-        <p id="powered">Powered with Open AI and Spotify</p>
-        <p id="description">Powered with Open AI and Spotify</p>
-        <a id="log-out" class="hidden" href="/logout">Log Out</a>
-        <p id="credits">Made by <a href="https://github.com/euyogi">Yogi Nam</a></p>
-    </footer>
-
-    <script src="/static/script.js"></script>
-    </body>
-{% endblock %}
+<script src="/static/script.js"></script>
+</body>

@@ -1,13 +1,8 @@
-{% extends "template.html" %}
-
-{% block title %}
-    <Title>Images</Title>
-{% endblock %}
-
-{% block content %}
-    <div class="column full-height">
+<!DOCTYPE html>
+<link href="/static/styles.css" rel="stylesheet">
+<div class="column full-height">
     {% if not logged %}
-        <p><a href="/login">Login</a> to enable drawing history</p>
+        <p><a href="/login">Login</a> to enable _drawing history</p>
     {% else %}
         {% if empty %}
             <p>Empty</p>
@@ -18,5 +13,4 @@
             {% endfor %}
         </div>
     {% endif %}
-    </div>
-{% endblock %}
+</div>

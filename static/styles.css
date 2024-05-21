@@ -78,7 +78,7 @@ li {
   margin-bottom: 5px;
 }
 
-p, label, span, img, .color { /* transition in those make them fell laggy */
+p, form, label, span, img, .color { /* transition in those make them fell laggy */
   margin: 0;
   transition: none;
 }
@@ -214,13 +214,6 @@ p, label, span, img, .color { /* transition in those make them fell laggy */
   opacity: 0;
 }
 
-#fill-form {
-  accent-color: var(--lighter-color);
-  height: 16px;
-  margin: 0;
-  width: 16px;
-}
-
 #clear-canvas, #generate-song {
   height: 40px;
   padding: 5px 20px;
@@ -237,16 +230,23 @@ p, label, span, img, .color { /* transition in those make them fell laggy */
   color: #fff;
 }
 
+#description, #powered {
+  display: inline;
+}
+
 #fill {
   height: min-content;
 }
 
-#fill-form:checked ~ label {
-  color: var(--lighter-color);
+#fill-form {
+  accent-color: var(--lighter-color);
+  height: 16px;
+  margin: 0;
+  width: 16px;
 }
 
-#description, #powered {
-  display: inline;
+#fill-form:checked ~ label {
+  color: var(--lighter-color);
 }
 
 #images-container {
@@ -262,6 +262,16 @@ p, label, span, img, .color { /* transition in those make them fell laggy */
 
 #images-container img:hover {
   border: var(--border-radius) solid lightgray;
+}
+
+#loading {
+  filter: sepia(30%) hue-rotate(147deg) brightness(60%) contrast(100%);
+  height: 30%;
+  left: 50%;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 #powered {
