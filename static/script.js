@@ -120,6 +120,9 @@ class CanvasCore {
             this.ctx.lineTo(e.offsetX, e.offsetY) // creating line according to the mouse pointer
             this.ctx.stroke() // drawing/filling line with color
         } else {
+            if (this.selected_tool[0] === 'r')
+                this.ctx.lineJoin = "miter"
+
             this.ctx.beginPath()
 
             if (this.selected_tool[0] === 'l')
@@ -140,7 +143,6 @@ class CanvasCore {
     }
 
     _drawRect = (e) => {
-        this.ctx.lineJoin = "mitter"
         this.ctx.rect(e.offsetX, e.offsetY, this.prevMouseX - e.offsetX, this.prevMouseY - e.offsetY)
     }
 
