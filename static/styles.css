@@ -272,6 +272,7 @@ p, form, label, span, img, .color, #color-picker { /* transition in those make t
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
+  z-index: 2;
 }
 
 #powered {

@@ -264,7 +264,7 @@ class PaintifyCanvas extends CanvasCore {
         this.generate_song.disabled = true
         this.description.innerHTML = "Checking your nice drawing..."
         this.loading.classList.remove("hidden")
-        this.canvas.style.opacity = "30%"
+        this.canvas.style.filter = "brightness(30%)"
 
         fetch(("/paintify"), {
             method: "POST",
@@ -275,7 +275,7 @@ class PaintifyCanvas extends CanvasCore {
             this.generate_song.disabled = false
             this.history_board.contentWindow.location.reload()
             this.loading.classList.add("hidden")
-            this.canvas.style.opacity = "100%"
+            this.canvas.style.filter = ""
 
             response.json().then(data => {
                 if (!response.ok) {
