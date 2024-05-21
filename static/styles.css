@@ -78,7 +78,7 @@ li {
   margin-bottom: 5px;
 }
 
-p, form, label, span, img, .color { /* transition in those make them fell laggy */
+p, form, label, span, img, .color, #color-picker { /* transition in those make them fell laggy */
   margin: 0;
   transition: none;
 }
