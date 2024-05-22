@@ -27,7 +27,7 @@ class CanvasCore {
         window.addEventListener("keydown", (e) => {
             if (e.ctrlKey && "zy".includes(e.key)) {
                 e.preventDefault()
-                const [backup1, backup2] = [this.backup, this.backup_backup]
+                let [backup1, backup2] = [this.backup, this.backup_backup]
                 if (e.key === 'y') [backup1, backup2] = [backup2, backup1]
 
                 if (backup1.length > 0) {
