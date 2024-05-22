@@ -23,24 +23,16 @@ class CanvasCore {
         this.canvas.onpointermove = this._drawing
         this.canvas.onpointerup = this.canvas.onpointerout = () => this.is_drawing = false
 
-        const double_backup = (backup_container1, backup_container2, img) => {
-            if (backup_container1.length > 0) {
-                img.onload = () => {
-                    backup_container2.push(img)
-                }
-                img.src = this.canvas.toDataURL()
-                this.imageToCanvas(backup_container1.pop())
-            }
-        }
-
         window.addEventListener("keydown", (e) => {
-            let img = new Image()
             if (e.ctrlKey && "zy".includes(e.key)) {
                 e.preventDefault()
-                if (e.key === 'z')
-                    double_backup(this.backup, this.backup_backup, img)
-                else
-                    double_backup(this.backup_backup, this.backup, img)
+                const [backup1, backup2] = [this.backup, this.backup_backup]
+                if (e.key === 'y') [backup1, backup2] = [backup2, backup1]
+
+                if (backup1.length > 0) {
+                    this._toImage(this.canvas.toDataURL()).then(img => backup2.push(img))
+                    this.imageToCanvas(backup1.pop())
+                }
 
                 if (this.backup.length === 0)
                     this.canvas_title.classList.remove("hidden")
@@ -49,6 +41,15 @@ class CanvasCore {
 
         this._setDimensions()
         this.fillCanvas()
+    }
+
+    // creates a new image object, set src, when image load we can use it
+    _toImage(src) {
+        return new Promise((func) => {
+            const img = new Image()
+            img.onload = () => func(img)
+            img.src = src
+        });
     }
 
     fillCanvas = (color = "#fff") => {
@@ -80,21 +81,17 @@ class CanvasCore {
     }
 
     _resizeCanvas = () => {
-        let img = new Image()
-        img.onload = () => {
+        this._toImage(this.canvas.toDataURL()).then(img => {
             this._setDimensions()
             this.imageToCanvas(img)
-        }
-        img.src = this.canvas.toDataURL()
+        })
     }
 
     _startDraw = (e) => {
-        let img = new Image()
-        img.onload = () => {
+        this._toImage(this.canvas.toDataURL()).then(img => {
             this.backup.push(img)
             this.backup_backup = []
-        }
-        img.src = this.canvas.toDataURL()
+        })
 
         this.canvas_title.classList.add("hidden")
         this.is_drawing = true
@@ -104,8 +101,7 @@ class CanvasCore {
         this.ctx.lineWidth = this.brush_width
         this.ctx.strokeStyle = this.selected_color
         this.ctx.fillStyle = this.selected_color// passing selected_color as fill style
-        this.ctx.lineCap = "round"
-        this.ctx.lineJoin = "round"
+        this.ctx.lineCap = this.ctx.lineJoin = "round"
         // copying canvas data & passing as snapshot value.. this avoids dragging
         this.snapshot = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
     }
@@ -120,17 +116,12 @@ class CanvasCore {
             this.ctx.lineTo(e.offsetX, e.offsetY) // creating line according to the mouse pointer
             this.ctx.stroke() // drawing/filling line with color
         } else {
-            if (this.selected_tool[0] === 'r')
-                this.ctx.lineJoin = "miter"
+            if (this.selected_tool[0] === 'r') this.ctx.lineJoin = "miter"
 
             this.ctx.beginPath()
-
-            if (this.selected_tool[0] === 'l')
-                this._drawLine(e)
-            else if (this.selected_tool[0] === 'r')
-                this._drawRect(e)
-            else
-                this._drawCircle(e)
+            if (this.selected_tool[0] === 'l') this._drawLine(e)
+            else if (this.selected_tool[0] === 'r') this._drawRect(e)
+            else this._drawCircle(e)
 
             this.fill_form ? this.ctx.fill() : this.ctx.stroke()
         }
@@ -178,7 +169,7 @@ class PaintifyCanvas extends CanvasCore {
         this.description = document.querySelector("#description")
         this.loading = document.querySelector("#loading")
 
-        this.fill_form_checkbox.onclick = () => this.fill_form = this.fill_form_checkbox.checked
+        this.fill_form_checkbox.addEventListener("click", () => this.fill_form = this.fill_form_checkbox.checked)
         this.size_slider.onchange = () => this.brush_width = this.size_slider.value
         this.fill.onclick = () => this.fillCanvas(this.selected_color)
         this.clear_canvas.onclick = () => this.fillCanvas()
@@ -211,25 +202,19 @@ class PaintifyCanvas extends CanvasCore {
 
         this.history_board.onload = () => {
             setTimeout(() => {
-                this.history_board.contentWindow.window.onkeydown = remove_img_event
+                const contentWindow = this.history_board.contentWindow
+                contentWindow.window.onkeydown = remove_img_event
                 this.buttons_board.classList.add("disabled")
 
-                let imgs = this.history_board.contentWindow.document.querySelectorAll("img")
-
-                imgs.forEach(img => {
+                contentWindow.document.querySelectorAll("img").forEach(img => {
                     img.onclick = () => {
-                        let selected_img = this.history_board.contentWindow.document.querySelector(".image-selected")
-
-                        if (selected_img)
-                            selected_img.classList.remove("image-selected")
-
+                        contentWindow.document.querySelector(".image-selected")?.classList.remove("image-selected")
                         img.classList.add("image-selected")
                         this.buttons_board.classList.remove("disabled")
                     }
                 })
 
-                if (!this.history_board.contentWindow.document.querySelector("a"))
-                    this.log_out.classList.remove("hidden")
+                if (!contentWindow.document.querySelector("a")) this.log_out.classList.remove("hidden")
             }, 700)
         }
 
