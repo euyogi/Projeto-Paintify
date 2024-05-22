@@ -25,7 +25,7 @@ body {
   overflow: hidden;
 }
 
-button, img, .color, #color-picker, #fill-form, #size-slider, .option, input[type="submit"] {
+button, img, .color, #color-picker, #fill-shape, #size-slider, .option, input[type="submit"] {
   cursor: pointer;
 }
 
@@ -238,7 +238,7 @@ p, form, label, span, img, .color, #color-picker { /* transition in those make t
   height: min-content;
 }
 
-#fill-form {
+#fill-shape {
   accent-color: var(--lighter-color);
   height: 16px;
   margin: 0;

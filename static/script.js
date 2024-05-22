@@ -3,9 +3,10 @@ class CanvasCore {
         this.canvas = canvas
         this.canvas_title = canvas_title
         this.ctx = this.canvas.getContext("2d", {alpha: false, willReadFrequently: false})
-        this.is_drawing = false
-        this.fill_form = false
+        this.state = "not drawing"
         this.selected_tool = "brush"
+        this.fill_shape = false
+        this.background_color = "#fff"
         this.selected_color = "#000"
         this.brush_width = 5
         this.backup = []
@@ -21,7 +22,7 @@ class CanvasCore {
         this.canvas.oncontextmenu = (e) => e.preventDefault()
         this.canvas.onpointerdown = this._startDraw
         this.canvas.onpointermove = this._drawing
-        this.canvas.onpointerup = this.canvas.onpointerout = () => this.is_drawing = false
+        this.canvas.onpointerup = this.canvas.onpointerout = () => this.state = "not drawing"
 
         window.addEventListener("keydown", (e) => {
             if (e.ctrlKey && "zy".includes(e.key)) {
@@ -55,6 +56,7 @@ class CanvasCore {
     fillCanvas = (color = "#fff") => {
         this.canvas_title.classList.remove("hidden") // shows canvas-title
         this.ctx.fillStyle = color
+        this.background_color = color
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.fillStyle = this.selected_color // setting fillstyle back to the selected_color
@@ -62,7 +64,7 @@ class CanvasCore {
     }
 
     imageToCanvas = (img) => {
-        this.fillCanvas()
+        this.fillCanvas(this.background_color)
 
         let scale = Math.min(this.canvas.width / img.width, this.canvas.height / img.height),
                 width = Math.round(img.width * scale),
@@ -93,44 +95,46 @@ class CanvasCore {
             this.backup_backup = []
         })
 
+        if (this.selected_tool[0] === 'e') {
+            this.ctx.strokeStyle = this.background_color
+            this.ctx.fillStyle = this.background_color
+        } else {
+            this.ctx.strokeStyle = this.selected_color
+            this.ctx.fillStyle = this.selected_color
+        }
+        this.state = "drawing"
         this.canvas_title.classList.add("hidden")
-        this.is_drawing = true
         this.prevMouseX = e.offsetX
         this.prevMouseY = e.offsetY
         this.ctx.beginPath() // creating new path to draw
         this.ctx.lineWidth = this.brush_width
-        this.ctx.strokeStyle = this.selected_color
-        this.ctx.fillStyle = this.selected_color// passing selected_color as fill style
         this.ctx.lineCap = this.ctx.lineJoin = "round"
         // copying canvas data & passing as snapshot value.. this avoids dragging
         this.snapshot = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
     }
 
     _drawing = (e) => {
-        if (!this.is_drawing) return
+        // console.log(this.state)
+        if (this.state[0] === 'n') return;
 
         this.ctx.putImageData(this.snapshot, 0, 0) // adding copied canvas data on to this canvas
+        if (this.selected_tool[0] === 'r') this.ctx.lineJoin = "miter"
 
-        if (this.selected_tool[0] === 'b' || this.selected_tool[0] === 'e') {
-            this.ctx.strokeStyle = this.selected_tool[0] === 'e' ? "#fff" : this.selected_color
-            this.ctx.lineTo(e.offsetX, e.offsetY) // creating line according to the mouse pointer
-            this.ctx.stroke() // drawing/filling line with color
-        } else {
-            if (this.selected_tool[0] === 'r') this.ctx.lineJoin = "miter"
-
+        if (this.selected_tool[0] === 'b' || this.selected_tool[0] === 'e') this.ctx.lineTo(e.offsetX, e.offsetY)
+        else {
             this.ctx.beginPath()
             if (this.selected_tool[0] === 'l') this._drawLine(e)
-            else if (this.selected_tool[0] === 'r') this._drawRect(e)
-            else this._drawCircle(e)
-
-            this.fill_form ? this.ctx.fill() : this.ctx.stroke()
+            else if (this.selected_tool[0] === 'c') this._drawCircle(e)
+            else this._drawRect(e)
         }
+
+        if (this.fill_shape) this.ctx.fill()
+        this.ctx.stroke()
     }
 
     _drawLine = (e) => {
         this.ctx.moveTo(this.prevMouseX, this.prevMouseY) // moving line to the mouse pointer
         this.ctx.lineTo(e.offsetX, e.offsetY) // creating line according to the mouse pointer
-        this.ctx.stroke()
     }
 
     _drawRect = (e) => {
@@ -153,7 +157,7 @@ class PaintifyCanvas extends CanvasCore {
         super(document.querySelector("canvas"), document.querySelector("#canvas-title"))
 
         this.tool_btns = document.querySelectorAll(".tool")
-        this.fill_form_checkbox = document.querySelector("#fill-form")
+        this.fill_shape_checkbox = document.querySelector("#fill-shape")
         this.size_slider = document.querySelector("#size-slider")
         this.fill = document.querySelector("#fill")
         this.color_btns = document.querySelectorAll(".color")
@@ -169,7 +173,7 @@ class PaintifyCanvas extends CanvasCore {
         this.description = document.querySelector("#description")
         this.loading = document.querySelector("#loading")
 
-        this.fill_form_checkbox.addEventListener("click", () => this.fill_form = this.fill_form_checkbox.checked)
+        this.fill_shape_checkbox.addEventListener("click", () => this.fill_shape = this.fill_shape_checkbox.checked)
         this.size_slider.onchange = () => this.brush_width = this.size_slider.value
         this.fill.onclick = () => this.fillCanvas(this.selected_color)
         this.clear_canvas.onclick = () => this.fillCanvas()

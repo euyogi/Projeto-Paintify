@@ -24,27 +24,25 @@ db = SQLAlchemy(app)
 spotify_core = Spotify(client_credentials_manager=SpotifyClientCredentials())
 
 
-class Image(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    data = db.Column(db.String, unique=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-
-    def __init__(self, data, user_id):
-        self.data = data
-        self.user_id = user_id
-
-
 class User(db.Model):
-    __tablename__ = "users"
-
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True)
     password = db.Column(db.String)
-    imgs = db.relationship("Image", backref="users", lazy=True)
+    imgs = db.relationship("Image", backref="user", lazy=True)
 
     def __init__(self, name, password):
         self.name = name
         self.password = password
+
+
+class Image(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    data = db.Column(db.String, unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+
+    def __init__(self, data, user_id):
+        self.data = data
+        self.user_id = user_id
 
 
 class SpotifyDecorator:
@@ -86,12 +84,13 @@ class GPT:
                     ]}
                 ]
             )
+            print(response)
             content = response.choices[0].message.content.split("/")
             self._music_name = content[1].strip()
             self._img_description = content[0].strip()
         except Exception as e:
             self._music_name = "Error"
-            self._img_description = str(e).split("message': '")[1].split('\'')[0]
+            self._img_description = str(e).split("message': ")[1].split(", \'type")[0]
 
 
     def getMusicName(self):
