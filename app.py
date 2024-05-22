@@ -27,7 +27,7 @@ spotify_core = Spotify(client_credentials_manager=SpotifyClientCredentials())
 class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     data = db.Column(db.String, unique=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("User.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 
     def __init__(self, data, user_id):
         self.data = data
