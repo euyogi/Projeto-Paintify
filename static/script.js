@@ -57,7 +57,6 @@ class CanvasCore {
         this.canvas_title.classList.remove("hidden") // shows canvas-title
         this.ctx.fillStyle = color
         this.background_color = color
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.fillStyle = this.selected_color // setting fillstyle back to the selected_color
         this.snapshot = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
@@ -114,7 +113,6 @@ class CanvasCore {
     }
 
     _drawing = (e) => {
-        // console.log(this.state)
         if (this.state[0] === 'n') return;
 
         this.ctx.putImageData(this.snapshot, 0, 0) // adding copied canvas data on to this canvas

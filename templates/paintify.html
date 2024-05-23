@@ -12,17 +12,14 @@
 <div class="container">
     <iframe id="music-board" height="80"
             allow="autoplay; clipboard-write; encrypted-media"></iframe>
-
     <div class="row">
         <div id="buttons-board" class="button-column disabled">
             <button id="remove">Remove</button>
             <button id="redraw">Redraw</button>
         </div>
-
         <iframe id="history-board" src="{{ url_for('imgs') }}" height="80"></iframe>
     </div>
 </div>
-
 <div id="main-container" class="container">
     <section class="column tools-board">
         <div>
@@ -46,7 +43,6 @@
                 </li>
             </ul>
         </div>
-
         <div>
             <label>Tools</label>
             <ul>
@@ -63,7 +59,6 @@
                 </li>
             </ul>
         </div>
-
         <div>
             <div class="row">
                 <label>Colors</label>
@@ -79,26 +74,22 @@
                 </li>
             </ul>
         </div>
-
         <div class="button-column">
             <button id="clear-canvas">Clear Canvas</button>
             <button id="generate-song">Generate Song</button>
         </div>
     </section>
-
     <section class="drawing-board">
         <p id="canvas-title">Draw here and click generate song!</p>
         <img id="loading" class="hidden" src="/static/images/load_animation.gif" alt="Loading animation">
         <canvas></canvas>
     </section>
 </div>
-
 <footer>
     <p id="powered">Powered with Open AI and Spotify</p>
     <p id="description">Powered with Open AI and Spotify</p>
     <a id="log-out" class="hidden" href="/logout">Log Out</a>
     <p id="credits">Made by <a href="https://github.com/euyogi">Yogi Nam</a></p>
 </footer>
-
 <script src="/static/script.js"></script>
 </body>

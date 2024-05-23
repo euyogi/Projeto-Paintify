@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <link href="/static/styles.css" rel="stylesheet">
-<div class="column full-height">
+<section class="column full-height">
     {% if not logged %}
         <p><a href="/login">Login</a> to enable drawing history</p>
     {% else %}
@@ -13,4 +13,4 @@
             {% endfor %}
         </div>
     {% endif %}
-</div>
+</section>

@@ -66,11 +66,12 @@ class GPT:
     def __new__(cls, model="gpt-4o"):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
-            cls._instance._model = model
-            cls._music_name = "No image has been loaded"
-            cls._img_description = "No image has been loaded"
-
         return GPT._instance
+
+    def __init__(self, model="gpt-4o"):
+        self._model = model
+        self._music_name = "No image has been loaded"
+        self._img_description = "No image has been loaded"
 
     def loadImage(self, base64_image):
         try:
@@ -91,7 +92,6 @@ class GPT:
         except Exception as e:
             self._music_name = "Error"
             self._img_description = str(e).split("message': ")[1].split(", \'type")[0]
-
 
     def getMusicName(self):
         return self._music_name
