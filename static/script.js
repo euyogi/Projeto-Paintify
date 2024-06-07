@@ -241,9 +241,10 @@ class PaintifyCanvas extends CanvasCore {
             }
         })
 
-        this._color_picker.onchange = () => {
+        this._color_picker.onchange = this._color_picker.onclick = () => {
             // our parent is actually the round color button, so simulate it's functionality
             this._color_picker.parentElement.style.background = this._color_picker.value
+            console.log(this._color_picker.value)
             this._color_picker.parentElement.click()
         }
 
