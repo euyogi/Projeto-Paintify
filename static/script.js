@@ -219,7 +219,7 @@ class PaintifyCanvas extends CanvasCore {
                 }
             })
 
-            if (!contentWindow.document.querySelector("a")) this._log_out.classList.remove("hidden")
+            if (contentWindow.document.querySelector("input")) this._log_out.classList.remove("hidden")
         }
 
         this._tool_btns.forEach(btn => {
