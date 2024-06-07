@@ -6,18 +6,22 @@
         <input type=password placeholder="Password" name=password autocomplete="on" required minlength="1">
         <input type=submit name="{{ type }}" value="{{ type }}">
     </form>
-    {% if falhou %}
-        {% if type == "Login" %}
-            <p style="color: orangered;">Invalid User/Password. Try again or <a href={{ url_for("signup") }}>Sign Up</a>.
-            </p>
+    {% if not falhou %}
+        {% if type == "Log in" %}
+            {% if signed_up %}
+                <p style="color: limegreen;">Success! You may log in now.</p>
+            {% else %}
+                <p>No Account? <a href={{ url_for("signup") }}>Sign up</a></p>
+            {% endif %}
         {% else %}
-            <p style="color: orangered;">Username taken. Try again or <a href={{ url_for("login") }}>Login</a></p>
+            <p>Has an account? <a href={{ url_for("login") }}>Log in</a></p>
         {% endif %}
     {% else %}
-        {% if type == "Login" %}
-            <p>No Account? <a href={{ url_for("signup") }}>Sign Up</a></p>
+        {% if type == "Log in" %}
+            <p style="color: orangered;">Invalid User/Password. Try again or <a href={{ url_for("signup") }}>Sign up</a>
+            </p>
         {% else %}
-            <p>Has an account? <a href={{ url_for("login") }}>Login</a></p>
+            <p style="color: orangered;">Username taken. Try again or <a href={{ url_for("login") }}>Log in</a></p>
         {% endif %}
     {% endif %}
 </section>

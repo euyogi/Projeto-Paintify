@@ -10,14 +10,14 @@
 </head>
 <body class="background column">
 <div class="container">
-    <iframe id="music-board" height="80"
+    <iframe id="music-board" height="80" loading="eager"
             allow="autoplay; clipboard-write; encrypted-media"></iframe>
     <div class="row">
         <div id="buttons-board" class="button-column disabled">
             <button id="remove">Remove</button>
             <button id="redraw">Redraw</button>
         </div>
-        <iframe id="history-board" src="{{ url_for('imgs') }}" height="80"></iframe>
+        <iframe id="history-board" height="80" loading="eager" src="{{ url_for('imgs') }}"></iframe>
     </div>
 </div>
 <div id="main-container" class="container">
@@ -80,7 +80,7 @@
         </div>
     </section>
     <section class="drawing-board">
-        <p id="canvas-title">Draw here and click generate song!</p>
+        <p id="canvas-title">Draw here, then click generate song!</p>
         <img id="loading" class="hidden" src="/static/images/load_animation.gif" alt="Loading animation">
         <canvas></canvas>
     </section>

@@ -4,12 +4,12 @@
     {% if not logged %}
         <p><a href="/login">Login</a> to enable drawing history</p>
     {% else %}
-        {% if empty %}
+        {% if imgs | length == 0 %}
             <p>Empty</p>
         {% endif %}
         <div id="images-container" class="row">
-            {% for img in imgs %}
-                <img src="{{ img }}" alt="Image">
+            {% for img in imgs | reverse %}
+                <img src="{{ img }}" alt="Drawing">
             {% endfor %}
         </div>
     {% endif %}
