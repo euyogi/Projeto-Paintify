@@ -22,6 +22,7 @@ body {
   text-align: center; /* titles and footer */
   margin: 0; /* no y-scrolling on history-board */
   overflow: hidden;
+  height: 100vh;
 }
 
 button, img, .color, #color-picker, #fill-shape, #size-slider, .option, input[type="submit"] {
@@ -84,7 +85,7 @@ p, form, label, span, img, .color, #buttons-board button, #color-picker { /* tra
 
 .background {
   background-color: var(--main-color);
-  margin: 50px 15px 0 15px; /* margin around the page */
+  margin: 15px; /* margin around the page */
 }
 
 .button-column {
